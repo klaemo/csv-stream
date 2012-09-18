@@ -1,0 +1,20 @@
+{
+  "name": "csv-stream",
+  "version": "0.0.1",
+  "description": "Streaming CSV Parser. Made entirely out of streams.",
+  "main": "csv-stream.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node test/csv-stream"
+  },
+  "repository": "",
+  "keywords": [
+    "csv",
+    "parser",
+    "stream"
+  ],
+  "author": "Clemens Stolle",
+  "license": "WTFPL"
+}
