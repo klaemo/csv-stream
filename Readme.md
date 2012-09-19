@@ -9,7 +9,7 @@ Behaves as a through stream. Pipe-able. Docs follow soon...
 var csv = require('csv-stream'),
     fs = require('fs')
 
-var fstream = fsCreateReadStream('/path/to/file'),
+var fstream = fs.createReadStream('/path/to/file'),
     parser = csv(/* options */)
 
 fstream.pipe(parser)
