@@ -8,8 +8,8 @@ var fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv'),
 
 fstream.pipe(parser)
 
-parser.on('data', function (data) {
-  console.log(data)
+parser.on('data', function (data, line) {
+  console.log(line)
 })
 parser.on('end', function () {
   console.log('Time: ' + (Date.now() - start) + 'ms')
