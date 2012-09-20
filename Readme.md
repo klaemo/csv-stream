@@ -40,7 +40,7 @@ __Note:__ If you pass a callback to ```csv-stream``` it will buffer the parsed d
 
 The parser can optionally take some options. Here they are with there defaults.
 
-```
+```javascript
 {
   delimiter: ',', // comma, semicolon, whatever
   newline: '\n', // newline character
