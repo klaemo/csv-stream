@@ -18,8 +18,7 @@ parser.on('data', function (data, lineNo) {
 })
 
 // AND/OR
-
-parser = csv(/*options,*/ function (err, doc) {
+function callback(err, doc) {
   if (err) throw err
 
   // now you have the complete parsed document
@@ -29,13 +28,26 @@ parser = csv(/*options,*/ function (err, doc) {
      * each line is itself an array of fields
      */
   })
-})
+}
 
 // now pump some data into it
 fstream.pipe(parser)
 
 ```
 __Note:__ If you pass a callback to ```csv-stream``` it will buffer the parsed data for you and pass it to the callback when it's done. Unscientific tests showed a dramatic (2x) slowdown when using this on large documents.
+
+### Options
+
+The parser can optionally take some options. Here they are with there defaults.
+
+```
+{
+  delimiter: ',', // comma, semicolon, whatever
+  newline: '\n', // newline character
+  quote: '\"', // what's considered a quote
+  empty: '' // empty fields are replaced by this
+}
+```
 
 ## Performance
 
