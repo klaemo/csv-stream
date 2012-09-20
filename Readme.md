@@ -35,6 +35,11 @@ parser = csv(/*options,*/ function (err, doc) {
 fstream.pipe(parser)
 
 ```
+__Note:__ If you pass a callback to ```csv-stream``` it will buffer the parsed data for you and pass it to the callback when it's done. Unscientific tests showed a dramatic (2x) slowdown when using this on large documents.
+
+## Performance
+
+The same unscientific test showed a throughput of ~20mb/s on a Macbook Pro 13" (mid 2010) when reading from disk.
 
 ## TODO
 

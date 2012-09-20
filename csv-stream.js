@@ -24,7 +24,7 @@ function CSVStream(opts, cb) {
   this.field = ''
   this.lineNo = 0
 
-  this.on('error', function(err) {
+  this.on('error', function (err) {
     if (this.cb) this.cb(err)
   })
 }
@@ -85,8 +85,8 @@ CSVStream.prototype.end = function (buf) {
 
   this.writable = false
   this.readable = false
-  this.emit('end')
   if (this.cb) this.cb(null, this.body)
+  this.emit('end')
   this.emit('close')
 }
 
@@ -95,8 +95,6 @@ CSVStream.prototype.destroy = function () {
   this.emit('close')
 }
 
-module.exports = function (opts, cb) {
-  return new CSVStream(opts, cb)
-}
+module.exports = function (opts, cb) { return new CSVStream(opts, cb) }
 
 module.exports.CSVStream = CSVStream
