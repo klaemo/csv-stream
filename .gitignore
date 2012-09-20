@@ -1,2 +1,3 @@
 test/fixtures/large.csv
 v8.log
+node_modules
