@@ -38,6 +38,7 @@ CSVStream.prototype.write = function (chunk) {
     this.parse(chunk)
   } catch (err) {
     this.emit('error', err)
+    if (this.cb) this.cb(err)
   }
   return true
 }
