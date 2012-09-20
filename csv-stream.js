@@ -15,7 +15,9 @@ function CSVStream(opts, cb) {
   this.delimiter = opts.delimiter || ','
   this.newline = opts.newline || '\n'
   this.quote = opts.quote || '\"'
-  this.empty = -1
+  this.empty = ''
+
+  if (opts.hasOwnPropery('empty')) this.empty = opts.empty
 
   // state
   this.body = []
@@ -54,7 +56,7 @@ CSVStream.prototype.parse = function (data) {
     }
 
     if (!this.isQuoted && c === this.delimiter) {
-      if (this.field === '' && this.empty !== -1) this.field = this.empty
+      if (this.field === '') this.field = this.empty
       this.line.push(this.field)
       this.field = ''
       continue
