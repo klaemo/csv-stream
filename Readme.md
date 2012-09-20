@@ -1,7 +1,7 @@
 csv-stream
 ===
 
-Behaves as a through stream. Pipe-able. Docs follow soon...
+Parses csv files. That's all.
 
 ## Usage
 
@@ -38,7 +38,7 @@ __Note:__ If you pass a callback to ```csv-stream``` it will buffer the parsed d
 
 ### Options
 
-The parser can optionally take some options. Here they are with there defaults.
+The parser can optionally take some options. Here they are with their defaults.
 
 ```javascript
 {
@@ -51,11 +51,10 @@ The parser can optionally take some options. Here they are with there defaults.
 
 ## Performance
 
-The same unscientific test showed a throughput of ~20mb/s on a Macbook Pro 13" (mid 2010) when reading from disk.
+The unscientific tests mentioned above showed a throughput of ~20mb/s on a Macbook Pro 13" (mid 2010) when reading from disk.
 
 ## TODO
 
-- Documentation
 - actual tests
 - maybe support weird encodings
 - publish to npm
