@@ -5,6 +5,9 @@ function CSVStream(opts, cb) {
   stream.Stream.call(this)
   this.writable = true
   this.readable = true
+
+  // assign callback
+  this.cb = null
   if (cb) this.cb = cb
   if (typeof opts === 'function') this.cb = opts
   
@@ -61,8 +64,7 @@ CSVStream.prototype.parse = function (data) {
 
       this.emit('data', this.line, this.lineNo)
 
-
-      this.body.push(this.line)
+      if (this.cb) this.body.push(this.line)
       this.lineNo += 1
 
       // reset state
