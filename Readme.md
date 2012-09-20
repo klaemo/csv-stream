@@ -12,22 +12,17 @@ var csv = require('csv-stream'),
 var fstream = fs.createReadStream('/path/to/file'),
     parser = csv(options /* optional */, callback /* optional */)
 
-// emits the current line as an array and the line number
-parser.on('data', function (data, lineNo) {
-  // do stuff with data
+// emits each row as an array of fields and it's number
+parser.on('data', function (row, rowNo) {
+  // do stuff with data as it comes in
 })
 
 // AND/OR
 function callback(err, doc) {
   if (err) throw err
 
-  // now you have the complete parsed document
-  doc.forEach(function (line) {
-    /* 
-     * doc is an array of lines from the csv input
-     * each line is itself an array of fields
-     */
-  })
+  // doc is an array of row arrays
+  doc.forEach(function (row) {})
 }
 
 // now pump some data into it
