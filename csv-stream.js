@@ -17,7 +17,7 @@ function CSVStream(opts, cb) {
   this.quote = opts.quote || '\"'
   this.empty = ''
 
-  if (opts.hasOwnPropery('empty')) this.empty = opts.empty
+  if (opts.hasOwnProperty('empty')) this.empty = opts.empty
 
   // state
   this.body = []

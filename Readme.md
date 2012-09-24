@@ -12,7 +12,7 @@ var csv = require('csv-stream'),
 var fstream = fs.createReadStream('/path/to/file'),
     parser = csv(options /* optional */, callback /* optional */)
 
-// emits each row as an array of fields and it's number
+// emits each row as an array of fields and its number
 parser.on('data', function (row, rowNo) {
   // do stuff with data as it comes in
 })
@@ -33,7 +33,7 @@ __Note:__ If you pass a callback to ```csv-stream``` it will buffer the parsed d
 
 ### Options
 
-The parser can optionally take some options. Here they are with their defaults.
+You can pass some options to the parser. Here are the defaults.
 
 ```javascript
 {
