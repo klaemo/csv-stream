@@ -1,6 +1,6 @@
 {
   "name": "csv-stream",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Streaming CSV Parser. Made entirely out of streams.",
   "main": "csv-stream.js",
   "directories": {
