@@ -1,7 +1,13 @@
 csv-stream
 ===
 
-Parses csv files. That's all.
+Parses csv files. Accepts options. Handles weird encodings. That's all.
+
+## Installation
+
+```
+not quite yet
+```
 
 ## Usage
 
@@ -33,14 +39,15 @@ __Note:__ If you pass a callback to ```csv-stream``` it will buffer the parsed d
 
 ### Options
 
-You can pass some options to the parser. Here are the defaults.
+You can pass some options to the parser. All of them are optional. Here are the defaults.
 
 ```javascript
 {
   delimiter: ',', // comma, semicolon, whatever
   newline: '\n', // newline character
   quote: '\"', // what's considered a quote
-  empty: '' // empty fields are replaced by this
+  empty: '' // empty fields are replaced by this,
+  encoding: '' // the encoding of the source, in case you need to convert it
 }
 ```
 
@@ -50,6 +57,5 @@ The unscientific tests mentioned above showed a throughput of ~20mb/s on a Macbo
 
 ## TODO
 
-- actual tests
-- maybe support weird encodings
+- more tests
 - publish to npm
