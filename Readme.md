@@ -11,7 +11,7 @@ npm install csv-streamify
 
 ## Usage
 
-This module implements a simple node 0.10.x (stream.Transform)[http://nodejs.org/api/stream.html#stream_class_stream_transform] stream.
+This module implements a simple node 0.10.x [stream.Transform](http://nodejs.org/api/stream.html#stream_class_stream_transform) stream.
 
 ```javascript
 var csv = require('csv-streamify'),
@@ -57,7 +57,7 @@ You can pass some options to the parser. All of them are optional. Here are the 
 }
 ```
 
-In order for the encoding option to take effect you need to install the excellent (node-iconv)[https://github.com/bnoordhuis/node-iconv] by node core contributor @bnoordhuis
+In order for the encoding option to take effect you need to install the excellent [node-iconv](https://github.com/bnoordhuis/node-iconv) by node core contributor @bnoordhuis
 Also, take a look at the node-iconv documentation for supported encodings.
 
 
