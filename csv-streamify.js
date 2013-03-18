@@ -1,26 +1,28 @@
-var stream = require('stream'),
+var Transform = require('stream').Transform,
     util = require('util'),
-    Iconv  = require('iconv').Iconv
+    Iconv
 
+try { Iconv = require('iconv').Iconv } catch (err) {}
 
 module.exports = function (opts, cb) { return new CSVStream(opts, cb) }
 
 module.exports.CSVStream = CSVStream
 
 function CSVStream (opts, cb) {
-  stream.Stream.call(this)
-  this.writable = true
-  this.readable = true
+  opts = opts || {}
+
+  if (opts.encoding) {
+    if (!Iconv) throw new Error('please npm install node-iconv')
+    this.iconv = new Iconv(opts.encoding, 'UTF-8')
+    ;delete opts.encoding
+  }
+
+  Transform.call(this, opts)
 
   // assign callback
   this.cb = null
   if (cb) this.cb = cb
   if (typeof opts === 'function') this.cb = opts
-
-  opts = opts || {}
-
-  if (opts.encoding)
-    this.iconv = new Iconv(opts.encoding, 'UTF-8');
 
   this.delimiter = opts.delimiter || ','
   this.newline = opts.newline || '\n'
@@ -36,31 +38,29 @@ function CSVStream (opts, cb) {
   this.field = ''
   this.lineNo = 0
 
-  this.on('error', function (err) {
-    if (this.cb) this.cb(err)
-    this.emit('error', err)
-  })
+  if (this.cb) {
+    this.on('error', this.cb)
+  }
 }
 
-util.inherits(CSVStream, stream.Stream)
+util.inherits(CSVStream, Transform)
 
-CSVStream.prototype.write = function (chunk) {
-  if (Buffer.isBuffer(chunk)) {
-    if (this.iconv) chunk = this.iconv.convert(chunk)
-    chunk = chunk.toString()
-  }
+CSVStream.prototype._transform = function (chunk, encoding, done) {
+  if (this.iconv) chunk = this.iconv.convert(chunk)
+  chunk = chunk.toString()
 
   try {
-    this.parse(chunk)
+    this._parse(chunk)
+    done()
   } catch (err) {
-    this.emit('error', err)
     if (this.cb) this.cb(err)
+    done(err)
   }
-  return true
 }
 
-CSVStream.prototype.parse = function (data) {
+CSVStream.prototype._parse = function (data) {
   var c
+
   for (var i = 0; i < data.length; i++) {
     c = data.charAt(i)
 
@@ -79,7 +79,8 @@ CSVStream.prototype.parse = function (data) {
     if (!this.isQuoted && c === '\n') {
       this.line.push(this.field)
 
-      this.emit('data', this.line, this.lineNo)
+      // emit the parsed line array as a string
+      this.push(JSON.stringify(this.line))
 
       if (this.cb) this.body.push(this.line)
       this.lineNo += 1
@@ -97,16 +98,8 @@ CSVStream.prototype.parse = function (data) {
 }
 
 CSVStream.prototype.end = function (buf) {
-  if (arguments.length) this.write(buf)
+  if (arguments.length) this._transform(buf)
 
-  this.writable = false
-  this.readable = false
   if (this.cb) this.cb(null, this.body)
   this.emit('end')
-  this.emit('close')
-}
-
-CSVStream.prototype.destroy = function () {
-  this.writable = false
-  this.emit('close')
 }

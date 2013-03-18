@@ -1,13 +1,14 @@
 {
-  "name": "csv-stream",
-  "version": "0.1.0",
+  "name": "csv-streamify",
+  "version": "0.2.0",
   "description": "Streaming CSV Parser. Made entirely out of streams.",
-  "main": "csv-stream.js",
+  "author": "Clemens Stolle",
+  "main": "csv-streamify.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "./node_modules/.bin/mocha -R spec"
   },
   "repository": "https://github.com/klaemo/csv-stream",
   "keywords": [
@@ -15,9 +16,11 @@
     "parser",
     "stream"
   ],
-  "author": "Clemens Stolle",
   "license": "WTFPL",
   "devDependencies": {
     "mocha": "1.8.x"
+  },
+  "engines": {
+    "node": ">=0.10.0"
   }
 }

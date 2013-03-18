@@ -1,26 +1,32 @@
-csv-stream
+csv-streamify
 ===
 
-Parses csv files. Accepts options. Handles weird encodings. That's all.
+Parses csv files. Accepts options. Handles weird encodings. No coffee script, no weird APIs. Just streams.
 
 ## Installation
 
 ```
-not quite yet
+npm install csv-streamify
 ```
 
 ## Usage
 
+This module implements a simple node 0.10.x (stream.Transform)[http://nodejs.org/api/stream.html#stream_class_stream_transform] stream.
+
 ```javascript
-var csv = require('csv-stream'),
+var csv = require('csv-streamify'),
     fs = require('fs')
 
 var fstream = fs.createReadStream('/path/to/file'),
     parser = csv(options /* optional */, callback /* optional */)
 
-// emits each row as an array of fields and its number
-parser.on('data', function (row, rowNo) {
+// emits each row as a JSON.stringified array of fields
+parser.on('data', function (line) {
   // do stuff with data as it comes in
+  // Array.isArray(JSON.parse(line)) === true
+
+  // current line number
+  console.log(parser.lineNo)
 })
 
 // AND/OR
@@ -31,8 +37,8 @@ function callback(err, doc) {
   doc.forEach(function (row) {})
 }
 
-// now pump some data into it
-fstream.pipe(parser)
+// now pump some data into it (and pipe it somewhere else)
+fstream.pipe(parser).pipe(nirvana)
 
 ```
 __Note:__ If you pass a callback to ```csv-stream``` it will buffer the parsed data for you and pass it to the callback when it's done. Unscientific tests showed a dramatic (2x) slowdown when using this on large documents.
@@ -51,6 +57,10 @@ You can pass some options to the parser. All of them are optional. Here are the 
 }
 ```
 
+In order for the encoding option to take effect you need to install the excellent (node-iconv)[https://github.com/bnoordhuis/node-iconv] by node core contributor @bnoordhuis
+Also, take a look at the node-iconv documentation for supported encodings.
+
+
 ## Performance
 
 The unscientific tests mentioned above showed a throughput of ~20mb/s on a Macbook Pro 13" (mid 2010) when reading from disk.
@@ -58,4 +68,3 @@ The unscientific tests mentioned above showed a throughput of ~20mb/s on a Macbo
 ## TODO
 
 - more tests
-- publish to npm

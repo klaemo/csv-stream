@@ -1,6 +1,6 @@
 /*jshint undef:false */
 var assert = require('assert'),
-    csv = require('../csv-stream'),
+    csv = require('../csv-streamify'),
     fs = require('fs')
 
 var fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv'),
@@ -13,20 +13,17 @@ describe('without callback', function() {
         parser = csv(),
         fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
 
-    parser.on('data', function (data, lineNo) {
-      assert.equal(lineNo, count)
-      assert(Array.isArray(data))
-      assert.equal(data.length, 2)
-
+    parser.on('readable', function () {
+      assert(Array.isArray(JSON.parse(parser.read())))
+      assert.equal(parser.lineNo, count);
       count += 1
     })
 
     parser.on('end', function () {
       assert.equal(count, 12)
-
+      assert.equal(parser.lineNo, 12)
       done()
     })
-
 
     fstream.pipe(parser)
   })
