@@ -21,7 +21,8 @@ var fstream = fs.createReadStream('/path/to/file'),
     parser = csv(options /* optional */, callback /* optional */)
 
 // emits each row as a JSON.stringified array of fields
-parser.on('data', function (line) {
+parser.on('readable', function () {
+  var line = parser.read()
   // do stuff with data as it comes in
   // Array.isArray(JSON.parse(line)) === true
 
