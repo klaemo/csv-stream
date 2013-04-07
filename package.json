@@ -18,7 +18,8 @@
   ],
   "license": "WTFPL",
   "devDependencies": {
-    "mocha": "1.8.x"
+    "mocha": "1.8.x",
+    "iconv": "2.0.x"
   },
   "engines": {
     "node": ">=0.10.0"
