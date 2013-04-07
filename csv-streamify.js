@@ -98,8 +98,6 @@ CSVStream.prototype._parse = function (data) {
 }
 
 CSVStream.prototype.end = function (buf) {
-  if (arguments.length) this._transform(buf)
-
   if (this.cb) this.cb(null, this.body)
-  this.emit('end')
+  Transform.prototype.end.call(this, buf)
 }
