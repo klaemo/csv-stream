@@ -2,6 +2,14 @@ var Transform = require('stream').Transform,
     util = require('util'),
     Iconv
 
+if (!Transform) {
+  try {
+    Transform = require('readable-stream').Transform
+  } catch(err) {
+    console.error("Please do npm install readable-stream", err)
+  }
+}
+
 try { Iconv = require('iconv').Iconv } catch (err) {}
 
 module.exports = function (opts, cb) { return new CSVStream(opts, cb) }
