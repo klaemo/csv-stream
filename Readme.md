@@ -13,6 +13,8 @@ npm install csv-streamify
 
 This module implements a simple node 0.10.x [stream.Transform](http://nodejs.org/api/stream.html#stream_class_stream_transform) stream.
 
+__Note:__ If you're still running node 0.8.x, you have to do ```npm install readable-stream```
+
 ```javascript
 var csv = require('csv-streamify'),
     fs = require('fs')
