@@ -84,7 +84,7 @@ CSVStream.prototype._parse = function (data) {
       continue
     }
 
-    if (/*!this.isQuoted && */c === '\n') {
+    if (/*!this.isQuoted && */c === this.newline) {
       this.line.push(this.field)
 
       // emit the parsed line array as a string
