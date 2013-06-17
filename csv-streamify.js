@@ -12,7 +12,11 @@ if (!Transform) {
 
 try { Iconv = require('iconv').Iconv } catch (err) {}
 
-module.exports = function (opts, cb) { return new CSVStream(opts, cb) }
+module.exports = function (opts, cb) {
+  var s = new CSVStream(opts, cb)
+  if (typeof cb === 'function') s.on('error', cb)
+  return s
+}
 
 module.exports.CSVStream = CSVStream
 
@@ -35,9 +39,7 @@ function CSVStream (opts, cb) {
   this.delimiter = opts.delimiter || ','
   this.newline = opts.newline || '\n'
   this.quote = opts.quote || '\"'
-  this.empty = ''
-
-  if (opts.hasOwnProperty('empty')) this.empty = opts.empty
+  this.empty = opts.hasOwnProperty('empty') ? opts.empty : ''
 
   // state
   this.body = []
@@ -45,10 +47,6 @@ function CSVStream (opts, cb) {
   this.line = []
   this.field = ''
   this.lineNo = 0
-
-  if (this.cb) {
-    this.on('error', this.cb)
-  }
 }
 
 util.inherits(CSVStream, Transform)
@@ -61,7 +59,6 @@ CSVStream.prototype._transform = function (chunk, encoding, done) {
     this._parse(chunk)
     done()
   } catch (err) {
-    if (this.cb) this.cb(err)
     done(err)
   }
 }
