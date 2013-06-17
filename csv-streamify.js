@@ -105,7 +105,10 @@ CSVStream.prototype._parse = function (data) {
   }
 }
 
-CSVStream.prototype.end = function (buf) {
-  if (this.cb) this.cb(null, this.body)
-  Transform.prototype.end.call(this, buf)
+
+CSVStream.prototype.end = function (buf, encoding) {
+  var self = this
+  Transform.prototype.end.call(this, buf, encoding, function () {
+    if (self.cb) self.cb(null, self.body)
+  })
 }
