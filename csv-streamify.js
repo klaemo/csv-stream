@@ -94,9 +94,7 @@ CSVStream.prototype._parse = function (data) {
       this.lineNo += 1
 
       // reset state
-      this.field = ''
-      this.line = []
-      this.isQuoted = false
+      this._reset()
       continue
     }
 
@@ -105,6 +103,11 @@ CSVStream.prototype._parse = function (data) {
   }
 }
 
+CSVStream.prototype._reset = function () {
+  this.field = ''
+  this.line = []
+  this.isQuoted = false
+}
 
 CSVStream.prototype.end = function (buf, encoding) {
   var self = this
