@@ -16,7 +16,7 @@
     "parser",
     "stream"
   ],
-  "license": "WTFPL",
+  "license": "BSD",
   "devDependencies": {
     "mocha": "1.8.x",
     "iconv": "2.0.x"
