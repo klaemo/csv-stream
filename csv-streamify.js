@@ -25,8 +25,8 @@ function CSVStream (opts, cb) {
 
   if (opts.encoding) {
     if (!Iconv) throw new Error('Please "npm install node-iconv"')
-    this.iconv = new Iconv(opts.encoding, 'UTF-8')
-    ;delete opts.encoding
+    this.iconv = new Iconv(opts.encoding, 'UTF-8');
+    delete opts.encoding
   }
 
   Transform.call(this, opts)

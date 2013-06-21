@@ -2,5 +2,7 @@
   "node": true,
   "strict": false,
   "undef": true,
-  "asi": true
+  "asi": true,
+  "maxlen": 80,
+  "indent": 2
 }
