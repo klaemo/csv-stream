@@ -89,8 +89,7 @@ CSVStream.prototype._parse = function (data) {
       // or as a stringified array (default)
       if (this.objectMode) {
         this.push(this.line)
-      }
-      else {
+      } else {
         this.push(JSON.stringify(this.line))
       }
 
