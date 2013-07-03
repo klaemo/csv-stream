@@ -1,4 +1,4 @@
-csv-streamify
+csv-streamify [![Build Status](https://travis-ci.org/klaemo/csv-stream.png)](https://travis-ci.org/klaemo/csv-stream)
 ===
 
 Parses csv files. Accepts options. Handles weird encodings. No coffee script, no weird APIs. Just streams.
