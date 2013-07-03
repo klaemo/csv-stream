@@ -40,6 +40,7 @@ function CSVStream (opts, cb) {
   this.newline = opts.newline || '\n'
   this.quote = opts.quote || '\"'
   this.empty = opts.hasOwnProperty('empty') ? opts.empty : ''
+  this.objectMode = opts.objectMode || false
 
   // state
   this.body = []
@@ -84,8 +85,14 @@ CSVStream.prototype._parse = function (data) {
     if (/*!this.isQuoted && */c === this.newline) {
       this.line.push(this.field)
 
-      // emit the parsed line array as a string
-      this.push(JSON.stringify(this.line))
+      // emit the parsed line as an array if in object mode
+      // or as a stringified array (default)
+      if (this.objectMode) {
+        this.push(this.line)
+      }
+      else {
+        this.push(JSON.stringify(this.line))
+      }
 
       if (this.cb) this.body.push(this.line)
       this.lineNo += 1

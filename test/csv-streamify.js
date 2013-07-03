@@ -98,5 +98,24 @@ describe('encoding', function() {
   })
 })
 
+describe('object mode', function() {
+  it('should stream one array per line', function (done) {
+    var count = 0,
+        parser = csv({objectMode: true}),
+        fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
 
+    parser.on('readable', function () {
+      assert(Array.isArray(parser.read()))
+      assert.equal(parser.lineNo, count);
+      count += 1
+    })
 
+    parser.on('end', function () {
+      assert.equal(count, 12)
+      assert.equal(parser.lineNo, 12)
+      done()
+    })
+
+    fstream.pipe(parser)
+  })
+})

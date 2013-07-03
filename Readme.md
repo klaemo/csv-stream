@@ -55,8 +55,9 @@ You can pass some options to the parser. All of them are optional. Here are the 
   delimiter: ',', // comma, semicolon, whatever
   newline: '\n', // newline character
   quote: '\"', // what's considered a quote
-  empty: '' // empty fields are replaced by this,
-  encoding: '' // the encoding of the source, in case you need to convert it
+  empty: '', // empty fields are replaced by this,
+  encoding: '', // the encoding of the source, in case you need to convert it
+  objectMode: false // emit arrays instead of stringified arrays
 }
 ```
 
