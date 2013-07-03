@@ -44,7 +44,7 @@ function callback(err, doc) {
 fstream.pipe(parser).pipe(nirvana)
 
 ```
-__Note:__ If you pass a callback to ```csv-stream``` it will buffer the parsed data for you and pass it to the callback when it's done. Unscientific tests showed a dramatic (2x) slowdown when using this on large documents.
+__Note:__ If you pass a callback to ```csv-stream``` it will buffer the parsed data for you and pass it to the callback when it's done.
 
 ### Options
 
@@ -63,11 +63,6 @@ You can pass some options to the parser. All of them are optional. Here are the 
 
 In order for the encoding option to take effect you need to install the excellent [node-iconv](https://github.com/bnoordhuis/node-iconv) by node core contributor @bnoordhuis
 Also, take a look at the node-iconv documentation for supported encodings.
-
-
-## Performance
-
-The unscientific tests mentioned above showed a throughput of ~20mb/s on a Macbook Pro 13" (mid 2010) when reading from disk.
 
 ## TODO
 
