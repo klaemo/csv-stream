@@ -72,3 +72,7 @@ The unscientific tests mentioned above showed a throughput of ~20mb/s on a Macbo
 ## TODO
 
 - more tests
+
+## Contributors
+
+[Nicolas Hery](https://github.com/nicolashery) (objectMode)
