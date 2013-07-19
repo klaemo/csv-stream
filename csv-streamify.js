@@ -6,7 +6,7 @@ if (!Transform) {
   try {
     Transform = require('readable-stream').Transform
   } catch(err) {
-    console.error('csv-streamify: Please "npm install readable-stream"', err)
+    throw new Error('Please "npm install readable-stream"')
   }
 }
 
@@ -23,10 +23,9 @@ module.exports.CSVStream = CSVStream
 function CSVStream (opts, cb) {
   opts = opts || {}
 
-  if (opts.encoding) {
+  if (opts.inputEncoding) {
     if (!Iconv) throw new Error('Please "npm install iconv"')
-    this.iconv = new Iconv(opts.encoding, 'UTF-8');
-    delete opts.encoding
+    this.iconv = new Iconv(opts.inputEncoding, 'UTF-8')
   }
 
   Transform.call(this, opts)
