@@ -8,14 +8,38 @@ var fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv'),
     tests = {}
 
 describe('without callback', function() {
-  it('should emit data once per line', function (done) {
+  it('should emit a buffer containing one line', function (done) {
     var count = 0,
         parser = csv(),
         fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
 
     parser.on('readable', function () {
-      assert(Array.isArray(JSON.parse(parser.read())))
-      assert.equal(parser.lineNo, count);
+      var chunk = parser.read()
+      assert(Buffer.isBuffer(chunk))
+      assert(Array.isArray(JSON.parse(chunk)))
+      assert.equal(parser.lineNo, count)
+      count += 1
+    })
+
+    parser.on('end', function () {
+      assert.equal(count, 12)
+      assert.equal(parser.lineNo, 12)
+      done()
+    })
+
+    fstream.pipe(parser)
+  })
+
+  it('should emit a string containing one line', function (done) {
+    var count = 0,
+        parser = csv({ encoding: 'utf8' }),
+        fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
+
+    parser.on('readable', function () {
+      var chunk = parser.read()
+      assert(typeof chunk === 'string')
+      assert(Array.isArray(JSON.parse(chunk)))
+      assert.equal(parser.lineNo, count)
       count += 1
     })
 
@@ -66,7 +90,7 @@ describe('quoted', function() {
 
 describe('encoding', function() {
   it('should convert encoding options is set', function (done) {
-    var parser = csv({ encoding: 'latin1' }, cb),
+    var parser = csv({ inputEncoding: 'latin1' }, cb),
         fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
 
     function cb (err, doc) {
@@ -98,15 +122,39 @@ describe('encoding', function() {
   })
 })
 
+describe('newline', function () {
+  it('should parse CRLF files', function (done) {
+    var count = 0,
+        parser = csv({ newline: '\r\n' }),
+        fstream = fs.createReadStream(__dirname + '/fixtures/quote-crlf.csv')
+
+    parser.on('readable', function () {
+      var chunk = parser.read()
+      assert(Buffer.isBuffer(chunk))
+      assert(Array.isArray(JSON.parse(chunk)))
+      assert.equal(parser.lineNo, count)
+      count += 1
+    })
+
+    parser.on('end', function () {
+      assert.equal(count, 12)
+      assert.equal(parser.lineNo, 12)
+      done()
+    })
+
+    fstream.pipe(parser)
+  })
+})
+
 describe('object mode', function() {
   it('should stream one array per line', function (done) {
     var count = 0,
-        parser = csv({objectMode: true}),
+        parser = csv({ objectMode: true }),
         fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
 
     parser.on('readable', function () {
       assert(Array.isArray(parser.read()))
-      assert.equal(parser.lineNo, count);
+      assert.equal(parser.lineNo, count)
       count += 1
     })
 

@@ -82,28 +82,37 @@ CSVStream.prototype._parse = function (data) {
       continue
     }
 
-    if (/*!this.isQuoted && */c === this.newline) {
-      this.line.push(this.field)
-
-      // emit the parsed line as an array if in object mode
-      // or as a stringified array (default)
-      if (this.objectMode) {
-        this.push(this.line)
-      } else {
-        this.push(JSON.stringify(this.line))
-      }
-
-      if (this.cb) this.body.push(this.line)
-      this.lineNo += 1
-
-      // reset state
-      this._reset()
+    if (c === this.newline) {
+      this._line()
+      continue
+    } else if ((c + data.charAt(i + 1)) === this.newline) {
+      this._line()
+      // skip over \n of \r\n
+      i += 1
       continue
     }
 
     // append current char to field string
     this.field += c
   }
+}
+
+CSVStream.prototype._line = function () {
+  this.line.push(this.field)
+
+  // emit the parsed line as an array if in object mode
+  // or as a stringified array (default)
+  if (this.objectMode) {
+    this.push(this.line)
+  } else {
+    this.push(JSON.stringify(this.line) + '\n')
+  }
+
+  if (this.cb) this.body.push(this.line)
+  this.lineNo += 1
+
+  // reset state
+  this._reset()
 }
 
 CSVStream.prototype._reset = function () {
