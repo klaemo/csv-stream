@@ -37,7 +37,7 @@ function CSVStream (opts, cb) {
 
   this.delimiter = opts.delimiter || ','
   this.newline = opts.newline || '\n'
-  this.quote = opts.quote || '\"'
+  this.quote = opts.quote || '"'
   this.empty = opts.hasOwnProperty('empty') ? opts.empty : ''
   this.objectMode = opts.objectMode || false
   this.hasColumns = opts.columns || false
@@ -83,7 +83,7 @@ CSVStream.prototype._parse = function (data) {
       continue
     }
 
-    if (c === this.newline) {
+    if (!this.isQuoted && c === this.newline) {
       this._line()
       continue
     } else if ((c + data.charAt(i + 1)) === this.newline) {
