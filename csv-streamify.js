@@ -40,6 +40,7 @@ function CSVStream (opts, cb) {
   this.quote = opts.quote || '\"'
   this.empty = opts.hasOwnProperty('empty') ? opts.empty : ''
   this.objectMode = opts.objectMode || false
+  this.hasColumns = opts.columns || false
 
   // state
   this.body = []
@@ -47,6 +48,7 @@ function CSVStream (opts, cb) {
   this.line = []
   this.field = ''
   this.lineNo = 0
+  this.columns = []
 }
 
 util.inherits(CSVStream, Transform)
@@ -98,6 +100,21 @@ CSVStream.prototype._parse = function (data) {
 
 CSVStream.prototype._line = function () {
   this.line.push(this.field)
+  var line = {},
+      self = this
+
+  if (this.hasColumns) {
+    if (this.lineNo === 0) {
+      this.columns = this.line
+      this.lineNo += 1
+      this._reset()
+      return
+    }
+    this.columns.forEach(function (column, i) {
+      line[column] = self.line[i]
+    })
+    this.line = line
+  }
 
   // emit the parsed line as an array if in object mode
   // or as a stringified array (default)
