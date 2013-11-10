@@ -22,8 +22,8 @@ describe('without callback', function() {
     })
 
     parser.on('end', function () {
-      assert.equal(count, 12)
-      assert.equal(parser.lineNo, 12)
+      assert.equal(count, 13)
+      assert.equal(parser.lineNo, 13)
       done()
     })
 
@@ -44,8 +44,8 @@ describe('without callback', function() {
     })
 
     parser.on('end', function () {
-      assert.equal(count, 12)
-      assert.equal(parser.lineNo, 12)
+      assert.equal(count, 13)
+      assert.equal(parser.lineNo, 13)
       done()
     })
 
@@ -62,7 +62,7 @@ describe('with callback', function() {
       if (err) throw err
 
       assert(Array.isArray(doc))
-      assert.equal(doc.length, 12)
+      assert.equal(doc.length, 13)
 
       done()
     }
@@ -137,8 +137,8 @@ describe('newline', function () {
     })
 
     parser.on('end', function () {
-      assert.equal(count, 12)
-      assert.equal(parser.lineNo, 12)
+      assert.equal(count, 13)
+      assert.equal(parser.lineNo, 13)
       done()
     })
 
@@ -159,8 +159,8 @@ describe('object mode', function() {
     })
 
     parser.on('end', function () {
-      assert.equal(count, 12)
-      assert.equal(parser.lineNo, 12)
+      assert.equal(count, 13)
+      assert.equal(parser.lineNo, 13)
       done()
     })
 

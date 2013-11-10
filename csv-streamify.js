@@ -122,6 +122,10 @@ CSVStream.prototype._reset = function () {
 
 CSVStream.prototype.end = function (buf, encoding) {
   var self = this
+
+  // flush last line
+  if (self.line.length) self._line()
+
   Transform.prototype.end.call(this, buf, encoding, function () {
     if (self.cb) self.cb(null, self.body)
   })
