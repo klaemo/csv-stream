@@ -8,15 +8,41 @@ var fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv'),
     tests = {}
 
 describe('without callback', function() {
-  it('should emit a buffer containing one line', function (done) {
+  it('should emit a buffer containing one line (non-flowing-mode)', function (done) {
     var count = 0,
         parser = csv(),
         fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
 
     parser.on('readable', function () {
-      var chunk = parser.read()
+      var chunk
+      while (null !== (chunk = parser.read())) {
+        assert(Buffer.isBuffer(chunk))
+        assert(Array.isArray(JSON.parse(chunk)))
+
+        assert.equal(parser.lineNo, count)
+        count += 1
+      }
+    })
+
+    parser.on('end', function () {
+      assert.equal(parser.body.length, 0, 'should not buffer')
+      assert.equal(count, 13)
+      assert.equal(parser.lineNo, 13)
+      done()
+    })
+
+    fstream.pipe(parser)
+  })
+
+  it('should emit a buffer containing one line (flowing-mode)', function (done) {
+    var count = 0,
+        parser = csv(),
+        fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
+
+    parser.on('data', function (chunk) {
       assert(Buffer.isBuffer(chunk))
       assert(Array.isArray(JSON.parse(chunk)))
+
       assert.equal(parser.lineNo, count)
       count += 1
     })
@@ -35,8 +61,7 @@ describe('without callback', function() {
         parser = csv({ encoding: 'utf8' }),
         fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
 
-    parser.on('readable', function () {
-      var chunk = parser.read()
+    parser.on('data', function (chunk) {
       assert(typeof chunk === 'string')
       assert(Array.isArray(JSON.parse(chunk)))
       assert.equal(parser.lineNo, count)
@@ -59,11 +84,9 @@ describe('with callback', function() {
         fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
 
     function cb (err, doc) {
-      if (err) throw err
-
+      if (err) return done(err)
       assert(Array.isArray(doc))
       assert.equal(doc.length, 13)
-
       done()
     }
 
@@ -77,7 +100,7 @@ describe('quoted', function() {
         fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
 
     function cb (err, doc) {
-      if (err) throw err
+      if (err) return done(err)
 
       assert.equal(doc[1][1], 'Etiketten, "Borthener Obst" - A4 (Neutral)')
 
@@ -94,7 +117,7 @@ describe('encoding', function() {
         fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
 
     function cb (err, doc) {
-      if (err) throw err
+      if (err) return done(err)
 
       assert.equal(doc[5][1], 'Gröger')
       assert.equal(doc[7][1], '1 - 4/- Blätter(R505)')
@@ -110,7 +133,7 @@ describe('encoding', function() {
         fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
 
     function cb (err, doc) {
-      if (err) throw err
+      if (err) return done(err)
 
       assert.notEqual(doc[5][1], 'Gröger')
       assert.notEqual(doc[7][1], '1 - 4/- Blätter(R505)')
@@ -128,8 +151,7 @@ describe('newline', function () {
         parser = csv({ newline: '\r\n' }),
         fstream = fs.createReadStream(__dirname + '/fixtures/quote-crlf.csv')
 
-    parser.on('readable', function () {
-      var chunk = parser.read()
+    parser.on('data', function (chunk) {
       assert(Buffer.isBuffer(chunk))
       assert(Array.isArray(JSON.parse(chunk)))
       assert.equal(parser.lineNo, count)
@@ -152,8 +174,8 @@ describe('object mode', function() {
         parser = csv({ objectMode: true }),
         fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
 
-    parser.on('readable', function () {
-      assert(Array.isArray(parser.read()))
+    parser.on('data', function (chunk) {
+      assert(Array.isArray(chunk))
       assert.equal(parser.lineNo, count)
       count += 1
     })
