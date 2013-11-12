@@ -1,7 +1,7 @@
 csv-streamify [![Build Status](https://travis-ci.org/klaemo/csv-stream.png)](https://travis-ci.org/klaemo/csv-stream)
 ===
 
-Parses csv files. Accepts options. Handles weird encodings. No coffee script, no weird APIs. Just streams.
+Parses csv files. Accepts options. Handles weird encodings. No coffee script, no weird APIs. Just streams. Tested against [csv-spectrum](https://github.com/maxogden/csv-spectrum) and used in production.
 
 ## Installation
 
@@ -58,7 +58,8 @@ The options are also passed to the underlying transform stream, so you can pass 
   quote: '\"', // what's considered a quote
   empty: '', // empty fields are replaced by this,
   inputEncoding: '', // the encoding of the source, if set Iconv will convert it to utf8
-  objectMode: false // emit arrays instead of stringified arrays or buffers
+  objectMode: false, // emit arrays instead of stringified arrays or buffers
+  columns: false // if set to true, uses first row as keys -> [ { column1: value1, column2: value2 }, ...]
 }
 ```
 

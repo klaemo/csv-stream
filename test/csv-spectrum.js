@@ -6,7 +6,7 @@ var assert = require('assert'),
 var csvs = fs.readdirSync(__dirname + '/csv-spectrum/csvs'),
     names = csvs.map(function (file) { return file.replace(/.csv/, '')})
 
-describe.only('csv-spectrum tests', function() {
+describe('csv-spectrum tests', function() {
   names.forEach(function (file, i) {
     var opts = { columns: true }
     // set encoding
@@ -18,7 +18,7 @@ describe.only('csv-spectrum tests', function() {
 
       function cb (err, doc) {
         if (err) throw err
-        console.log(doc)
+
         try {
           assert.deepEqual(doc, require('./csv-spectrum/json/' + file))
         } catch(e) { return done(e) }
