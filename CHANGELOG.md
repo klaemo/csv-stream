@@ -1,3 +1,10 @@
+0.6.0 / 2013-11-12
+==================
+
+ * feature: add support for columns
+ * fix: some small changes regarding quotes to align output with csv-spectrum
+ * internal: implement _flush
+
 0.5.1 / 2013-11-10
 ==================
 
