@@ -14,7 +14,8 @@ try { Iconv = require('iconv').Iconv } catch (err) {}
 
 module.exports = function (opts, cb) {
   var s = new CSVStream(opts, cb)
-  if (typeof cb === 'function') s.on('error', cb)
+
+  if (s.cb) s.on('error', s.cb)
   return s
 }
 
@@ -137,13 +138,13 @@ CSVStream.prototype._reset = function () {
   this.isQuoted = false
 }
 
-CSVStream.prototype.end = function (buf, encoding) {
-  var self = this
-
+CSVStream.prototype._flush = function (fn) {
   // flush last line
-  if (self.line.length) self._line()
-
-  Transform.prototype.end.call(this, buf, encoding, function () {
-    if (self.cb) self.cb(null, self.body)
-  })
+  try {
+    if (this.line.length) this._line()
+    if (this.cb) this.cb(null, this.body)
+    fn()
+  } catch(err) {
+    fn(err)
+  }
 }
