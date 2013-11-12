@@ -15,12 +15,7 @@ try { Iconv = require('iconv').Iconv } catch (err) {}
 module.exports = function (opts, cb) {
   var s = new CSVStream(opts, cb)
 
-  if (s.cb) {
-    s.on('error', s.cb)
-    s.on('finish', function () {
-      s.cb(null, s.body)
-    })
-  }
+  if (s.cb) s.on('error', s.cb)
   return s
 }
 
@@ -127,26 +122,12 @@ CSVStream.prototype._reset = function () {
 }
 
 CSVStream.prototype._flush = function (fn) {
-  var self = this
-
   // flush last line
   try {
-    if (self.line.length) self._line()
+    if (this.line.length) this._line()
+    if (this.cb) this.cb(null, this.body)
     fn()
   } catch(err) {
     fn(err)
   }
 }
-
-// CSVStream.prototype.end = function (buf, encoding, fn) {
-//   var self = this
-
-//   // flush last line
-//   if (self.line.length) self._line()
-
-//   // Transform.prototype.end.call(this, buf, encoding, function () {
-//   //   if (self.cb) self.cb(null, self.body)
-//   // })
-
-//   Transform.prototype.end.call(this, buf, encoding, fn)
-// }
