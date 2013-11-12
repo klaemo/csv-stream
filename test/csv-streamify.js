@@ -89,7 +89,7 @@ describe('quoted', function() {
 })
 
 describe('encoding', function() {
-  it('should convert encoding options is set', function (done) {
+  it('should convert encoding if option is set', function (done) {
     var parser = csv({ inputEncoding: 'latin1' }, cb),
         fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
 
