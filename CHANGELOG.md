@@ -1,3 +1,8 @@
+0.6.1 / 2013-11-13
+==================
+
+ * fix: properly handle CRLF in quoted sequences
+
 0.6.0 / 2013-11-12
 ==================
 
