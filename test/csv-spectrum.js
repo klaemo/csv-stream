@@ -12,6 +12,8 @@ describe('csv-spectrum tests', function() {
     // set encoding
     if (file == 'latin1') opts.inputEncoding = 'latin1'
 
+    if (/._crlf/.test(file)) opts.newline = '\r\n'
+
     it(file, function (done) {
       var parser = csv(opts, cb)
       var s = fs.createReadStream(__dirname + '/csv-spectrum/csvs/' + file + '.csv')

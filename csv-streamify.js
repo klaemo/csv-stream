@@ -92,8 +92,11 @@ CSVStream.prototype._parse = function (data) {
       continue
     }
 
-    if (this.isQuoted && c === this.newline) {
-      c = c.replace(this.newline, '\\n')
+    // escape special chars in quotes
+    if (this.isQuoted) {
+      c = c.replace(/\r/, '\\r')
+           .replace(/\n/, '\\n')
+           .replace(/"/, '\"')
     }
 
     if (!this.isQuoted && c === this.newline) {

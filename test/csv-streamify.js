@@ -94,23 +94,6 @@ describe('with callback', function() {
   })
 })
 
-describe('quoted', function() {
-  it('should handle quoted sequences', function (done) {
-    var parser = csv(cb),
-        fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
-
-    function cb (err, doc) {
-      if (err) return done(err)
-
-      assert.equal(doc[1][1], 'Etiketten, "Borthener Obst" - A4 (Neutral)')
-
-      done()
-    }
-
-    fstream.pipe(parser)
-  })
-})
-
 describe('encoding', function() {
   it('should convert encoding if option is set', function (done) {
     var parser = csv({ inputEncoding: 'latin1' }, cb),
@@ -146,7 +129,7 @@ describe('encoding', function() {
 })
 
 describe('newline', function () {
-  it('should parse CRLF files', function (done) {
+  it('should respect options.newline', function (done) {
     var count = 0,
         parser = csv({ newline: '\r\n' }),
         fstream = fs.createReadStream(__dirname + '/fixtures/quote-crlf.csv')
