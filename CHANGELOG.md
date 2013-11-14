@@ -1,3 +1,8 @@
+0.7.0 / 2013-11-14
+==================
+
+ * change: use iconv-lite for encoding conversion (please test und submit issues)
+
 0.6.1 / 2013-11-13
 ==================
 
