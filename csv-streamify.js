@@ -1,6 +1,6 @@
 var Transform = require('stream').Transform,
     util = require('util'),
-    Iconv
+    iconv
 
 if (!Transform) {
   try {
