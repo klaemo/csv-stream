@@ -10,7 +10,7 @@ if (!Transform) {
   }
 }
 
-try { Iconv = require('iconv').Iconv } catch (err) {}
+try { iconv = require('iconv-lite') } catch (err) {}
 
 module.exports = function (opts, cb) {
   var s = new CSVStream(opts, cb)
@@ -25,8 +25,10 @@ function CSVStream (opts, cb) {
   opts = opts || {}
 
   if (opts.inputEncoding) {
-    if (!Iconv) throw new Error('Please "npm install iconv"')
-    this.iconv = new Iconv(opts.inputEncoding, 'UTF-8')
+    if (!iconv) throw new Error('Please "npm install iconv-lite"')
+    if (!iconv.encodingExists(opts.inputEncoding))
+      throw new Error('unkown input encoding')
+    this.inputEncoding = opts.inputEncoding
   }
 
   Transform.call(this, opts)
@@ -55,7 +57,9 @@ function CSVStream (opts, cb) {
 util.inherits(CSVStream, Transform)
 
 CSVStream.prototype._transform = function (chunk, encoding, done) {
-  if (this.iconv) chunk = this.iconv.convert(chunk)
+  if (this.inputEncoding)
+    chunk = iconv.fromEncoding(chunk, this.inputEncoding)
+  
   chunk = chunk.toString()
 
   try {

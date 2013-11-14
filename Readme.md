@@ -63,8 +63,9 @@ The options are also passed to the underlying transform stream, so you can pass 
 }
 ```
 
-In order for the encoding option to take effect you need to install the excellent [node-iconv](https://github.com/bnoordhuis/node-iconv) by node core contributor @bnoordhuis
-Also, take a look at the node-iconv documentation for supported encodings.
+In order for the inputEncoding option to take effect you need to install [iconv-lite](https://github.com/ashtuchkin/iconv-lite).
+Also, take a look at the iconv-lite documentation for supported encodings.
+(iconv-lite provides pure javascript character encoding conversion -> no native code compilation)
 
 
 ## Contributors

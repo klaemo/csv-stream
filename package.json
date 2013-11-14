@@ -21,8 +21,8 @@
     "readable-stream": "1.1.x"
   },
   "devDependencies": {
-    "mocha": "1.12.x",
-    "iconv": "2.0.x"
+    "mocha": "1.14.x",
+    "iconv-lite": "~0.2.11"
   },
   "engines": {
     "node": ">=0.8.0"

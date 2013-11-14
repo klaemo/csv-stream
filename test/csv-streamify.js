@@ -76,6 +76,32 @@ describe('without callback', function() {
 
     fstream.pipe(parser)
   })
+
+  it('should emit a string containing one line (latin1)', function (done) {
+    var count = 0,
+        doc = [],
+        parser = csv({ inputEncoding: 'latin1', encoding: 'utf8' }),
+        fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
+
+    parser.on('data', function (chunk) {
+      assert(typeof chunk === 'string')
+      var json = JSON.parse(chunk)
+      assert(Array.isArray(json))
+      doc.push(json)
+      assert.equal(parser.lineNo, count)
+      count += 1
+    })
+
+    parser.on('end', function () {
+      assert.equal(count, 13)
+      assert.equal(parser.lineNo, 13)
+      assert.equal(doc[5][1], 'Gröger')
+      assert.equal(doc[7][1], '1 - 4/- Blätter(R505)')
+      done()
+    })
+
+    fstream.pipe(parser)
+  })
 })
 
 describe('with callback', function() {
