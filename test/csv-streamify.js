@@ -1,17 +1,14 @@
-/*jshint undef:false */
 var assert = require('assert'),
     csv = require('../csv-streamify'),
-    fs = require('fs')
-
-var fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv'),
-    start = Date.now(),
-    tests = {}
+    fs = require('fs'),
+    path = require('path'),
+    fixture = path.join(__dirname, 'fixtures', 'quote.csv')
 
 describe('without callback', function() {
-  it('should emit a buffer containing one line (non-flowing-mode)', function (done) {
+  it('should emit a buffer per line (non-flowing-mode)', function (done) {
     var count = 0,
         parser = csv(),
-        fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
+        fstream = fs.createReadStream(fixture)
 
     parser.on('readable', function () {
       var chunk
@@ -34,10 +31,10 @@ describe('without callback', function() {
     fstream.pipe(parser)
   })
 
-  it('should emit a buffer containing one line (flowing-mode)', function (done) {
+  it('should emit a buffer per line (flowing-mode)', function (done) {
     var count = 0,
         parser = csv(),
-        fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
+        fstream = fs.createReadStream(fixture)
 
     parser.on('data', function (chunk) {
       assert(Buffer.isBuffer(chunk))
@@ -59,7 +56,7 @@ describe('without callback', function() {
   it('should emit a string containing one line', function (done) {
     var count = 0,
         parser = csv({ encoding: 'utf8' }),
-        fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
+        fstream = fs.createReadStream(fixture)
 
     parser.on('data', function (chunk) {
       assert(typeof chunk === 'string')
@@ -81,7 +78,7 @@ describe('without callback', function() {
     var count = 0,
         doc = [],
         parser = csv({ inputEncoding: 'latin1', encoding: 'utf8' }),
-        fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
+        fstream = fs.createReadStream(fixture)
 
     parser.on('data', function (chunk) {
       assert(typeof chunk === 'string')
@@ -107,7 +104,7 @@ describe('without callback', function() {
 describe('with callback', function() {
   it('should callback with entire parsed document', function (done) {
     var parser = csv(cb),
-        fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
+        fstream = fs.createReadStream(fixture)
 
     function cb (err, doc) {
       if (err) return done(err)
@@ -123,7 +120,7 @@ describe('with callback', function() {
 describe('encoding', function() {
   it('should convert encoding if option is set', function (done) {
     var parser = csv({ inputEncoding: 'latin1' }, cb),
-        fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
+        fstream = fs.createReadStream(fixture)
 
     function cb (err, doc) {
       if (err) return done(err)
@@ -139,7 +136,7 @@ describe('encoding', function() {
 
   it('should not convert encoding if option is not set', function (done) {
     var parser = csv(cb),
-        fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
+        fstream = fs.createReadStream(fixture)
 
     function cb (err, doc) {
       if (err) return done(err)
@@ -158,7 +155,7 @@ describe('newline', function () {
   it('should respect options.newline', function (done) {
     var count = 0,
         parser = csv({ newline: '\r\n' }),
-        fstream = fs.createReadStream(__dirname + '/fixtures/quote-crlf.csv')
+        fstream = fs.createReadStream(path.join(__dirname, 'fixtures', 'quote_crlf.csv'))
 
     parser.on('data', function (chunk) {
       assert(Buffer.isBuffer(chunk))
@@ -178,10 +175,10 @@ describe('newline', function () {
 })
 
 describe('object mode', function() {
-  it('should stream one array per line', function (done) {
+  it('should emit one array per line', function (done) {
     var count = 0,
         parser = csv({ objectMode: true }),
-        fstream = fs.createReadStream(__dirname + '/fixtures/quote.csv')
+        fstream = fs.createReadStream(fixture)
 
     parser.on('data', function (chunk) {
       assert(Array.isArray(chunk))
