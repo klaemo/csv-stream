@@ -23,7 +23,8 @@
   "devDependencies": {
     "mocha": "1.14.x",
     "iconv-lite": "~0.2.11",
-    "csv-spectrum": "~0.1.0"
+    "csv-spectrum": "~0.1.0",
+    "async": "~0.2.9"
   },
   "engines": {
     "node": ">=0.8.0"
