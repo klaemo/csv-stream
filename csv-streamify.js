@@ -96,17 +96,10 @@ CSVStream.prototype._parse = function (data) {
       continue
     }
 
-    // escape special chars in quotes
-    if (this.isQuoted) {
-      c = c.replace(/\r/, '\\r')
-           .replace(/\n/, '\\n')
-           .replace(/"/, '\"')
-    }
-
     if (!this.isQuoted && c === this.newline) {
       this._line()
       continue
-    } else if ((c + data.charAt(i + 1)) === this.newline) {
+    } else if (!this.isQuoted && (c + data.charAt(i + 1)) === this.newline) {
       this._line()
       // skip over \n of \r\n
       i += 1
