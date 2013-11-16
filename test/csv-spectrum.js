@@ -1,34 +1,37 @@
-/*jshint undef:false */
 var assert = require('assert'),
     csv = require('../csv-streamify'),
-    fs = require('fs')
+    fs = require('fs'),
+    path = require('path'),
+    spectrum = require('csv-spectrum'),
+    csvPath = path.join(process.cwd(), 'node_modules', 'csv-spectrum', 'csvs')
 
-var csvs = fs.readdirSync(__dirname + '/csv-spectrum/csvs'),
-    names = csvs.map(function (file) { return file.replace(/.csv/, '')})
+spectrum(function (err, data) {
+  if (err) throw err
+  
+  describe('csv-spectrum tests', function() {
+    data.forEach(function (file, i) {
+      var opts = { columns: true }
+      // set encoding
+      if (file.name == 'latin1') opts.inputEncoding = 'latin1'
 
-describe('csv-spectrum tests', function() {
-  names.forEach(function (file, i) {
-    var opts = { columns: true }
-    // set encoding
-    if (file == 'latin1') opts.inputEncoding = 'latin1'
+      if (/._crlf/.test(file.name)) opts.newline = '\r\n'
 
-    if (/._crlf/.test(file)) opts.newline = '\r\n'
+      it(file.name, function (done) {
+        var parser = csv(opts, cb)
+        var s = fs.createReadStream(path.join(csvPath, file.name + '.csv'))
 
-    it(file, function (done) {
-      var parser = csv(opts, cb)
-      var s = fs.createReadStream(__dirname + '/csv-spectrum/csvs/' + file + '.csv')
+        function cb (err, doc) {
+          if (err) return done(err)
 
-      function cb (err, doc) {
-        if (err) throw err
+          try {
+            assert.deepEqual(doc, JSON.parse(file.json))
+          } catch(e) { return done(e) }
+          done()
+        }
 
-        try {
-          assert.deepEqual(doc, require('./csv-spectrum/json/' + file))
-        } catch(e) { return done(e) }
-        done()
-      }
-
-      s.pipe(parser)
+        s.pipe(parser)
+      })
     })
-  })
 
+  })
 })
