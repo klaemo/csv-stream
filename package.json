@@ -1,6 +1,6 @@
 {
   "name": "csv-streamify",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Streaming CSV Parser. Made entirely out of streams.",
   "author": "Clemens Stolle",
   "main": "csv-streamify.js",
@@ -23,8 +23,7 @@
   "devDependencies": {
     "mocha": "1.14.x",
     "iconv-lite": "~0.2.11",
-    "csv-spectrum": "~0.1.0",
-    "async": "~0.2.9"
+    "csv-spectrum": "~0.1.0"
   },
   "engines": {
     "node": ">=0.8.0"

@@ -1,3 +1,8 @@
+0.8.0 / 2013-11-16
+==================
+
+ * change: use csv-spectrum as a node module and comply to its changed tests
+
 0.7.0 / 2013-11-14
 ==================
 
