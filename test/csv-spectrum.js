@@ -9,22 +9,21 @@ spectrum(function (err, data) {
   if (err) throw err
   
   describe('csv-spectrum tests', function() {
-    data.forEach(function (file, i) {
-      var opts = { columns: true }
-      // set encoding
-      if (file.name == 'latin1') opts.inputEncoding = 'latin1'
+    data.forEach(function (spec) {
+      it(spec.name, function (done) {
+        var opts = { columns: true }
+        // set encoding
+        if (spec.name == 'latin1') opts.inputEncoding = 'latin1'
 
-      if (/._crlf/.test(file.name)) opts.newline = '\r\n'
-
-      it(file.name, function (done) {
+        if (/._crlf/.test(spec.name)) opts.newline = '\r\n'
         var parser = csv(opts, cb)
-        var s = fs.createReadStream(path.join(csvPath, file.name + '.csv'))
+        var s = fs.createReadStream(path.join(csvPath, spec.name + '.csv'))
 
         function cb (err, doc) {
           if (err) return done(err)
 
           try {
-            assert.deepEqual(doc, JSON.parse(file.json))
+            assert.deepEqual(doc, JSON.parse(spec.json))
           } catch(e) { return done(e) }
           done()
         }
