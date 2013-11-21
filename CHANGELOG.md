@@ -1,3 +1,9 @@
+0.8.1 / 2013-11-21
+==================
+
+ * fix: correctly parse empty quoted cells (#6)
+ * update csv-spectrum devDep
+
 0.8.0 / 2013-11-16
 ==================
 
