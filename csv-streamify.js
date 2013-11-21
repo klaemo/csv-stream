@@ -83,7 +83,13 @@ CSVStream.prototype._parse = function (data) {
 
     // ""
     if (c === this.quote && data.charAt(i + 1) === this.quote) {
-      this.isQuoted = this.isQuoted ? false : true
+      if (!this.isQuoted) {
+        this.line.push(this.empty)
+        i += 1
+        continue
+      }
+
+      // this.isQuoted = this.isQuoted ? false : true
       this.field += c
       i += 1
       continue

@@ -195,3 +195,27 @@ describe('object mode', function() {
     fstream.pipe(parser)
   })
 })
+
+describe('quirks', function () {
+  it('should handle quoted empty cells', function (done) {
+    var parser = csv({ columns: true }, function (err, res) {
+      if (err) return done(err)
+      assert.deepEqual(res, require('./fixtures/empty.json'))
+      done()
+    })
+
+    fs.createReadStream(path.join(__dirname, 'fixtures', 'empty.csv'))
+      .pipe(parser)
+  })
+
+  it('should handle quoted empty cells (CRLF)', function (done) {
+    var parser = csv({ columns: true, newline: '\r\n' }, function (err, res) {
+      if (err) return done(err)
+      assert.deepEqual(res, require('./fixtures/empty.json'))
+      done()
+    })
+
+    fs.createReadStream(path.join(__dirname, 'fixtures', 'empty_crlf.csv'))
+      .pipe(parser)
+  })
+})
