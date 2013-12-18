@@ -109,6 +109,10 @@ describe('with callback', function() {
     function cb (err, doc) {
       if (err) return done(err)
       assert(Array.isArray(doc))
+
+      // test for crazy quoted sequences
+      assert.equal(doc[1].length, 2)
+      
       assert.equal(doc.length, 13)
       done()
     }

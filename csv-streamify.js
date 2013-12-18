@@ -70,13 +70,20 @@ CSVStream.prototype._transform = function (chunk, encoding, done) {
   }
 }
 
+CSVStream.prototype._quoted = function (d, i) {
+  var single = d.charAt(i + 1) !== this.quote,
+      dbl = d.charAt(i + 1) === this.quote && d.charAt(i + 2) === this.quote
+
+  return single || dbl
+}
+
 CSVStream.prototype._parse = function (data) {
   var c
 
   for (var i = 0; i < data.length; i++) {
     c = data.charAt(i)
 
-    if (c === this.quote && data.charAt(i + 1) !== this.quote) {
+    if (c === this.quote && this._quoted(data, i)) {
       this.isQuoted = this.isQuoted ? false : true
       continue
     }
