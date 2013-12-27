@@ -48,18 +48,25 @@ __Note:__ If you pass a callback to ```csv-stream``` it will buffer the parsed d
 
 ### Options
 
-You can pass some options to the parser. All of them are optional. Here are the defaults.
+You can pass some options to the parser. **All of them are optional**.
+
 The options are also passed to the underlying transform stream, so you can pass in any standard node core stream options.
 
 ```javascript
 {
   delimiter: ',', // comma, semicolon, whatever
   newline: '\n', // newline character (use \r\n for CRLF files)
-  quote: '\"', // what's considered a quote
+  quote: '"', // what's considered a quote
   empty: '', // empty fields are replaced by this,
-  inputEncoding: '', // the encoding of the source, if set Iconv will convert it to utf8
-  objectMode: false, // emit arrays instead of stringified arrays or buffers
-  columns: false // if set to true, uses first row as keys -> [ { column1: value1, column2: value2 }, ...]
+  
+  // specify the encoding of the source if it's something other than utf8
+  inputEncoding: '',
+
+  // if true, emit arrays instead of stringified arrays or buffers
+  objectMode: false,
+
+  // if set to true, uses first row as keys -> [ { column1: value1, column2: value2 }, ...]
+  columns: false
 }
 ```
 
