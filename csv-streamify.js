@@ -47,11 +47,13 @@ function CSVStream (opts, cb) {
 
   // state
   this.body = []
-  this.isQuoted = false
-  this.line = []
-  this.field = ''
   this.lineNo = 0
-  this.columns = []
+  this._isQuoted = false
+  this._prev = []
+  this._newlineDetected = false
+  this._line = []
+  this._field = ''
+  this._columns = []
 }
 
 util.inherits(CSVStream, Transform)
@@ -63,7 +65,7 @@ CSVStream.prototype._transform = function (chunk, encoding, done) {
   chunk = chunk.toString()
 
   try {
-    this._parse(chunk)
+    this.parse(chunk)
     done()
   } catch (err) {
     done(err)
@@ -71,86 +73,114 @@ CSVStream.prototype._transform = function (chunk, encoding, done) {
 }
 
 CSVStream.prototype._quoted = function (d, i) {
+  this._prevChar = d.charAt(i)
   var single = d.charAt(i + 1) !== this.quote,
       dbl = d.charAt(i + 1) === this.quote && d.charAt(i + 2) === this.quote
 
   return single || dbl
 }
 
-CSVStream.prototype._parse = function (data) {
-  var c
+// keep the last 3 chars around
+CSVStream.prototype._q = function (char) {
+  this._prev.unshift(char) 
+  while (this._prev.length > 3) this._prev.pop()
+}
 
+CSVStream.prototype.parse = function (data) {
+  var c
+  
   for (var i = 0; i < data.length; i++) {
     c = data.charAt(i)
 
-    if (c === this.quote && this._quoted(data, i)) {
-      this.isQuoted = this.isQuoted ? false : true
-      continue
-    }
-
-    // ""
-    if (c === this.quote && data.charAt(i + 1) === this.quote) {
-      if (!this.isQuoted) {
-        this.line.push(this.empty)
-        i += 1
+    // we have a line break
+    if (!this._isQuoted && this._newlineDetected) {
+      this._newlineDetected = false
+      this._emitLine()
+      // crlf
+      if (c === this.newline[1]) {
+        this._q(c)
         continue
       }
+    }
 
-      // this.isQuoted = this.isQuoted ? false : true
-      this.field += c
-      i += 1
+    // skip over quote
+    if (c === this.quote) {
+      this._q(c)
       continue
     }
 
-    if (!this.isQuoted && c === this.delimiter) {
-      if (this.field === '') this.field = this.empty
-      this.line.push(this.field)
-      this.field = ''
+    // once we hit a regular char, check if quoting applies
+
+    // xx"[c]
+    if (c !== this.quote && this._prev[0] === this.quote && 
+        this._prev[1] !== this.quote) {
+      this._isQuoted = this._isQuoted ? false : true
+    }
+
+    // """[c]
+    if (c !== this.quote && this._prev[0] === this.quote && 
+        this._prev[1] === this.quote && this._prev[2] === this.quote) {
+      this._isQuoted = this._isQuoted ? false : true
+      this._field += this.quote
+    }
+
+    // x""[c]
+    if (this._field && c !== this.quote && 
+        this._prev[0] === this.quote && 
+        this._prev[1] === this.quote && 
+        this._prev[2] !== this.quote) {
+      this._field += this.quote
+    }
+
+    // delimiter
+    if (!this._isQuoted && c === this.delimiter) {
+      if (this._field === '') this._field = this.empty
+      this._line.push(this._field)
+      this._field = ''
+      this._q(c)
       continue
     }
 
-    if (!this.isQuoted && c === this.newline) {
-      this._line()
-      continue
-    } else if (!this.isQuoted && (c + data.charAt(i + 1)) === this.newline) {
-      this._line()
-      // skip over \n of \r\n
-      i += 1
+    // newline
+    if (!this._isQuoted && (c === this.newline || c === this.newline[0])) {
+      this._newlineDetected = true
+      this._q(c)
       continue
     }
 
-    // append current char to field string
-    this.field += c
+    this._q(c)
+    // append current char to _field string
+    this._field += c
   }
 }
 
-CSVStream.prototype._line = function () {
-  this.line.push(this.field)
+CSVStream.prototype._emitLine = function () {
+  this._line.push(this._field)
   var line = {},
       self = this
 
   if (this.hasColumns) {
     if (this.lineNo === 0) {
-      this.columns = this.line
+      this._columns = this._line
       this.lineNo += 1
       this._reset()
       return
     }
-    this.columns.forEach(function (column, i) {
-      line[column] = self.line[i]
+    this._columns.forEach(function (column, i) {
+      line[column] = self._line[i]
     })
-    this.line = line
+    this._line = line
   }
 
   // emit the parsed line as an array if in object mode
   // or as a stringified array (default)
   if (this.objectMode) {
-    this.push(this.line)
+    this.push(this._line)
   } else {
-    this.push(JSON.stringify(this.line) + '\n')
+    this.push(JSON.stringify(this._line) + '\n')
   }
 
-  if (this.cb) this.body.push(this.line)
+  if (this.cb) this.body.push(this._line)
   this.lineNo += 1
 
   // reset state
@@ -158,15 +188,16 @@ CSVStream.prototype._line = function () {
 }
 
 CSVStream.prototype._reset = function () {
-  this.field = ''
-  this.line = []
-  this.isQuoted = false
+  this._prev = []
+  this._field = ''
+  this._line = []
+  this._isQuoted = false
 }
 
 CSVStream.prototype._flush = function (fn) {
   // flush last line
   try {
-    if (this.line.length) this._line()
+    if (this._line.length) this._emitLine()
     if (this.cb) this.cb(null, this.body)
     fn()
   } catch(err) {

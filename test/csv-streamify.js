@@ -112,6 +112,9 @@ describe('with callback', function() {
 
       // test for crazy quoted sequences
       assert.equal(doc[1].length, 2)
+      assert.deepEqual(doc[1], [
+        'Job Description:', '"Etiketten", "Borthener Obst" - A4 (Neutral)'
+      ])
       
       assert.equal(doc.length, 13)
       done()
@@ -197,5 +200,25 @@ describe('object mode', function() {
     })
 
     fstream.pipe(parser)
+  })
+})
+
+describe('edge cases', function() {
+  it('should handle line breaks spanning multiple chunks', function() {
+    var parser = csv({ newline: '\r\n' }, function() {})
+    parser.parse('hey,yo\r')
+    parser.parse('\nfoo,bar')
+    parser._flush(function() {})
+
+    assert.deepEqual(parser.body, [ [ 'hey', 'yo' ], ['foo', 'bar'] ])
+  })
+
+  it('should handle quotes spanning multiple chunks', function() {
+    var parser = csv(function() {})
+    parser.parse('"""hey,yo"')
+    parser.parse('"",foo,bar')
+    parser._flush(function() {})
+
+    assert.deepEqual(parser.body, [ [ '"hey,yo"', 'foo', 'bar' ] ])
   })
 })
