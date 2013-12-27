@@ -26,7 +26,6 @@ var fstream = fs.createReadStream('/path/to/file'),
 parser.on('readable', function () {
   var line = parser.read()
   // do stuff with data as it comes in
-  // Array.isArray(JSON.parse(line)) === true
 
   // current line number
   console.log(parser.lineNo)
@@ -37,14 +36,14 @@ function callback(err, doc) {
   if (err) return handleErrorGracefully(err)
 
   // doc is an array of row arrays
-  doc.forEach(function (row) {})
+  doc.forEach(function (row) { console.log(row) })
 }
 
 // now pump some data into it (and pipe it somewhere else)
 fstream.pipe(parser).pipe(nirvana)
 
 ```
-__Note:__ If you pass a callback to ```csv-stream``` it will buffer the parsed data for you and pass it to the callback when it's done.
+__Note:__ If you pass a callback to ```csv-streamify``` it will buffer the parsed data for you and pass it to the callback when it's done.
 
 ### Options
 
@@ -70,7 +69,7 @@ The options are also passed to the underlying transform stream, so you can pass 
 }
 ```
 
-In order for the inputEncoding option to take effect you need to install [iconv-lite](https://github.com/ashtuchkin/iconv-lite).
+In order for the inputEncoding option to take effect you need to install [iconv-lite](https://github.com/ashtuchkin/iconv-lite) (`npm install iconv-lite --save`).
 Also, take a look at the iconv-lite documentation for supported encodings.
 (iconv-lite provides pure javascript character encoding conversion -> no native code compilation)
 
