@@ -73,6 +73,12 @@ In order for the inputEncoding option to take effect you need to install [iconv-
 Also, take a look at the iconv-lite documentation for supported encodings.
 (iconv-lite provides pure javascript character encoding conversion -> no native code compilation)
 
+## Wishlist
+
+- CLI
+- browser support
+
+If you would like to contribute either of those just open an issue so we can discuss it further. :)
 
 ## Contributors
 
