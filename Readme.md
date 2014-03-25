@@ -73,9 +73,29 @@ In order for the inputEncoding option to take effect you need to install [iconv-
 Also, take a look at the iconv-lite documentation for supported encodings.
 (iconv-lite provides pure javascript character encoding conversion -> no native code compilation)
 
+## CLI
+
+To use on the command line install it globally:
+
+```bash
+$ npm install csv-streamify -g
+```
+
+This should add the `csv-streamify` command to your `$PATH`.
+
+Then, you either pipe data into it or give it a filename:
+
+```bash
+# pipe data in
+$ cat some_data.csv | csv-streamify
+# pass a filename
+$ csv-streamify some_data.csv > output.json
+# tell csv-streamify to read from + wait on stdin
+$ csv-streamify -
+```
+
 ## Wishlist
 
-- CLI
 - browser support
 
 If you would like to contribute either of those just open an issue so we can discuss it further. :)

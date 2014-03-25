@@ -10,6 +10,9 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha -R spec"
   },
+  "bin": {
+    "csv-streamify": "cli.js"
+  },
   "repository": "https://github.com/klaemo/csv-stream",
   "keywords": [
     "csv",
