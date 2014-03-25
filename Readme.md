@@ -43,7 +43,7 @@ function callback(err, doc) {
 fstream.pipe(parser).pipe(nirvana)
 
 ```
-__Note:__ If you pass a callback to ```csv-streamify``` it will buffer the parsed data for you and pass it to the callback when it's done.
+__Note:__ If you pass a callback to ```csv-streamify``` it will buffer the parsed data for you and pass it to the callback when it's done. This behaviour can obviously lead to out of memory errors with very large csv files.
 
 ### Options
 
