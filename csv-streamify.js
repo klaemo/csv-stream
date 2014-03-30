@@ -6,7 +6,7 @@ if (!Transform) {
   try {
     Transform = require('readable-stream').Transform
   } catch(err) {
-    throw new Error('Please "npm install readable-stream"')
+    throw new Error('Please "npm install readable-stream".')
   }
 }
 
@@ -25,9 +25,9 @@ function CSVStream (opts, cb) {
   opts = opts || {}
 
   if (opts.inputEncoding) {
-    if (!iconv) throw new Error('Please "npm install iconv-lite"')
+    if (!iconv) throw new Error('Please "npm install iconv-lite".')
     if (!iconv.encodingExists(opts.inputEncoding))
-      throw new Error('unkown input encoding')
+      throw new Error('Unknown input encoding "' + opts.inputEncoding + '".')
     this.inputEncoding = opts.inputEncoding
   }
 
