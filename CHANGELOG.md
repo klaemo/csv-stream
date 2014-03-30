@@ -1,3 +1,8 @@
+1.0.0 / 2014-03-30
+==================
+
+ * No changes, I just want to start doing semver properly.
+
 0.9.1 / 2014-03-25
 ==================
 
