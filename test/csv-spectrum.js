@@ -2,7 +2,6 @@ var assert = require('assert'),
     csv = require('../csv-streamify'),
     fs = require('fs'),
     path = require('path'),
-    fs = require('fs'),
     base = path.join(process.cwd(), 'node_modules', 'csv-spectrum'),
     csvPath = path.join(base, 'csvs')
 
