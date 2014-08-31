@@ -1,7 +1,7 @@
 csv-streamify [![Build Status](https://travis-ci.org/klaemo/csv-stream.png)](https://travis-ci.org/klaemo/csv-stream)
 ===
 
-Parses csv files. Accepts options. Handles weird encodings. No coffee script, no weird APIs. Just streams. Tested against [csv-spectrum](https://github.com/maxogden/csv-spectrum) and used in production.
+Parses csv files. Accepts options. No coffee script, no weird APIs. Just streams. Tested against [csv-spectrum](https://github.com/maxogden/csv-spectrum) and used in production.
 
 ## Installation
 
@@ -57,9 +57,6 @@ The options are also passed to the underlying transform stream, so you can pass 
   newline: '\n', // newline character (use \r\n for CRLF files)
   quote: '"', // what's considered a quote
   empty: '', // empty fields are replaced by this,
-  
-  // specify the encoding of the source if it's something other than utf8
-  inputEncoding: '',
 
   // if true, emit arrays instead of stringified arrays or buffers
   objectMode: false,
@@ -69,7 +66,7 @@ The options are also passed to the underlying transform stream, so you can pass 
 }
 ```
 
-In order for the inputEncoding option to take effect you need to install [iconv-lite](https://github.com/ashtuchkin/iconv-lite) (`npm install iconv-lite --save`).
+[iconv-lite](https://github.com/ashtuchkin/iconv-lite) (`npm install iconv-lite --save`).
 Also, take a look at the iconv-lite documentation for supported encodings.
 (iconv-lite provides pure javascript character encoding conversion -> no native code compilation)
 

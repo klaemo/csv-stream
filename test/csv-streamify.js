@@ -73,32 +73,6 @@ describe('without callback', function() {
 
     fstream.pipe(parser)
   })
-
-  it('should emit a string containing one line (latin1)', function (done) {
-    var count = 0,
-        doc = [],
-        parser = csv({ inputEncoding: 'latin1', encoding: 'utf8' }),
-        fstream = fs.createReadStream(fixture)
-
-    parser.on('data', function (chunk) {
-      assert(typeof chunk === 'string')
-      var json = JSON.parse(chunk)
-      assert(Array.isArray(json))
-      doc.push(json)
-      assert.equal(parser.lineNo, count)
-      count += 1
-    })
-
-    parser.on('end', function () {
-      assert.equal(count, 13)
-      assert.equal(parser.lineNo, 13)
-      assert.equal(doc[5][1], 'Gröger')
-      assert.equal(doc[7][1], '1 - 4/- Blätter(R505)')
-      done()
-    })
-
-    fstream.pipe(parser)
-  })
 })
 
 describe('with callback', function() {
@@ -117,40 +91,6 @@ describe('with callback', function() {
       ])
       
       assert.equal(doc.length, 13)
-      done()
-    }
-
-    fstream.pipe(parser)
-  })
-})
-
-describe('encoding', function() {
-  it('should convert encoding if option is set', function (done) {
-    var parser = csv({ inputEncoding: 'latin1' }, cb),
-        fstream = fs.createReadStream(fixture)
-
-    function cb (err, doc) {
-      if (err) return done(err)
-
-      assert.equal(doc[5][1], 'Gröger')
-      assert.equal(doc[7][1], '1 - 4/- Blätter(R505)')
-
-      done()
-    }
-
-    fstream.pipe(parser)
-  })
-
-  it('should not convert encoding if option is not set', function (done) {
-    var parser = csv(cb),
-        fstream = fs.createReadStream(fixture)
-
-    function cb (err, doc) {
-      if (err) return done(err)
-
-      assert.notEqual(doc[5][1], 'Gröger')
-      assert.notEqual(doc[7][1], '1 - 4/- Blätter(R505)')
-
       done()
     }
 
