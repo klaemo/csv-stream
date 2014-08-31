@@ -1,5 +1,6 @@
 csv-streamify [![Build Status](https://travis-ci.org/klaemo/csv-stream.png)](https://travis-ci.org/klaemo/csv-stream)
 ===
+[![NPM](https://nodei.co/npm/csv-streamify.png?downloadRank=true)](https://nodei.co/npm/csv-streamify/)
 
 Parses csv files. Accepts options. No coffee script, no weird APIs. Just streams. Tested against [csv-spectrum](https://github.com/maxogden/csv-spectrum) and used in production.
 
