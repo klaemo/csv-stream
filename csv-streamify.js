@@ -1,13 +1,5 @@
-var Transform = require('stream').Transform,
+var Transform = require('readable-stream').Transform,
     util = require('util')
-
-if (!Transform) {
-  try {
-    Transform = require('readable-stream').Transform
-  } catch(err) {
-    throw new Error('Please "npm install readable-stream".')
-  }
-}
 
 module.exports = function (opts, cb) {
   var s = new CSVStream(opts, cb)
@@ -69,13 +61,13 @@ CSVStream.prototype._quoted = function (d, i) {
 
 // keep the last 3 chars around
 CSVStream.prototype._q = function (char) {
-  this._prev.unshift(char) 
+  this._prev.unshift(char)
   while (this._prev.length > 3) this._prev.pop()
 }
 
 CSVStream.prototype.parse = function (data) {
   var c
-  
+
   for (var i = 0; i < data.length; i++) {
     c = data.charAt(i)
 
@@ -99,22 +91,22 @@ CSVStream.prototype.parse = function (data) {
     // once we hit a regular char, check if quoting applies
 
     // xx"[c]
-    if (c !== this.quote && this._prev[0] === this.quote && 
+    if (c !== this.quote && this._prev[0] === this.quote &&
         this._prev[1] !== this.quote) {
       this._isQuoted = this._isQuoted ? false : true
     }
 
     // """[c]
-    if (c !== this.quote && this._prev[0] === this.quote && 
+    if (c !== this.quote && this._prev[0] === this.quote &&
         this._prev[1] === this.quote && this._prev[2] === this.quote) {
       this._isQuoted = this._isQuoted ? false : true
       this._field += this.quote
     }
 
     // x""[c]
-    if (this._field && c !== this.quote && 
-        this._prev[0] === this.quote && 
-        this._prev[1] === this.quote && 
+    if (this._field && c !== this.quote &&
+        this._prev[0] === this.quote &&
+        this._prev[1] === this.quote &&
         this._prev[2] !== this.quote) {
       this._field += this.quote
     }
