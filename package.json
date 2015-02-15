@@ -22,11 +22,11 @@
   ],
   "license": "BSD",
   "dependencies": {
-    "readable-stream": "^1.0.31"
+    "readable-stream": "^1.0.33"
   },
   "devDependencies": {
     "csv-spectrum": "^0.2.0",
-    "mocha": "^1.21.4"
+    "mocha": "^2.1.0"
   },
   "engines": {
     "node": ">=0.8.0"
