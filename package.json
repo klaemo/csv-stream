@@ -8,7 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha -R spec"
+    "test": "mocha -R spec"
   },
   "bin": {
     "csv-streamify": "cli.js"

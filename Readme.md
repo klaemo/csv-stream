@@ -4,6 +4,8 @@ csv-streamify [![Build Status](https://travis-ci.org/klaemo/csv-stream.png)](htt
 
 Parses csv files. Accepts options. No coffee script, no weird APIs. Just streams. Tested against [csv-spectrum](https://github.com/maxogden/csv-spectrum) and used in production.
 
+Works in node `0.8`, `0.10`, `0.12` and `iojs`.
+
 ## Installation
 
 ```
@@ -12,9 +14,9 @@ npm install csv-streamify
 
 ## Usage
 
-This module implements a simple node 0.10.x [stream.Transform](http://nodejs.org/api/stream.html#stream_class_stream_transform) stream.
+This module implements a simple node [stream.Transform](http://nodejs.org/api/stream.html#stream_class_stream_transform) stream.
 
-__Note:__ csv-streamify pulls in the ```readable-stream``` module, so it also works on node 0.8
+__Note:__ csv-streamify uses the `readable-stream` module, so it also works on node 0.8.
 
 ```javascript
 var csv = require('csv-streamify'),
@@ -44,7 +46,7 @@ function callback(err, doc) {
 fstream.pipe(parser).pipe(nirvana)
 
 ```
-__Note:__ If you pass a callback to ```csv-streamify``` it will buffer the parsed data for you and pass it to the callback when it's done. This behaviour can obviously lead to out of memory errors with very large csv files.
+__Note:__ If you pass a callback to `csv-streamify` it will buffer the parsed data for you and pass it to the callback when it's done. This behaviour can obviously lead to out of memory errors with very large csv files.
 
 ### Options
 
@@ -67,9 +69,7 @@ The options are also passed to the underlying transform stream, so you can pass 
 }
 ```
 
-[iconv-lite](https://github.com/ashtuchkin/iconv-lite) (`npm install iconv-lite --save`).
-Also, take a look at the iconv-lite documentation for supported encodings.
-(iconv-lite provides pure javascript character encoding conversion -> no native code compilation)
+Also, take a look at [iconv-lite](https://github.com/ashtuchkin/iconv-lite) (`npm install iconv-lite --save`), it provides pure javascript streaming character encoding conversion.
 
 ## CLI
 
