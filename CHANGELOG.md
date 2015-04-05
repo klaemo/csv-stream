@@ -1,7 +1,8 @@
-2.0.0 / 2014-08-xx
+2.0.0 / 2015-02-15
 ==================
 
- * iconv-lite should be used seperatly
+ * iconv-lite should be used seperatly.
+ * iojs and 0.12 compat.
 
 1.0.0 / 2014-03-30
 ==================
