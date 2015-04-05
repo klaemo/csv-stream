@@ -4,7 +4,7 @@ csv-streamify [![Build Status](https://travis-ci.org/klaemo/csv-stream.png)](htt
 
 Parses csv files. Accepts options. No coffee script, no weird APIs. Just streams. Tested against [csv-spectrum](https://github.com/maxogden/csv-spectrum) and used in production.
 
-Works in node `0.8`, `0.10`, `0.12` and `iojs`.
+Works in node `0.10`, `0.12` and `iojs`.
 
 ## Installation
 
@@ -15,8 +15,6 @@ npm install csv-streamify
 ## Usage
 
 This module implements a simple node [stream.Transform](http://nodejs.org/api/stream.html#stream_class_stream_transform) stream.
-
-__Note:__ csv-streamify uses the `readable-stream` module, so it also works on node 0.8.
 
 ```javascript
 var csv = require('csv-streamify'),
