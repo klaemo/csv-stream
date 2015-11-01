@@ -20,7 +20,7 @@
     "stream",
     "cli"
   ],
-  "license": "BSD",
+  "license": "BSD-2-Clause",
   "dependencies": {
     "readable-stream": "^2.0.4"
   },
