@@ -1,12 +1,11 @@
 /* global describe, it */
-'use strict'
 
-const assert = require('assert')
-const csv = require('../csv-streamify')
-const fs = require('fs')
-const path = require('path')
-const base = path.join(process.cwd(), 'node_modules', 'csv-spectrum')
-const csvPath = path.join(base, 'csvs')
+var assert = require('assert')
+var csv = require('../csv-streamify')
+var fs = require('fs')
+var path = require('path')
+var base = path.join(process.cwd(), 'node_modules', 'csv-spectrum')
+var csvPath = path.join(base, 'csvs')
 
 describe('spectrum', function () {
   const specs = fs.readdirSync(csvPath).map(function (spec) { return spec.replace('.csv', '') })
