@@ -1,10 +1,10 @@
 'use strict'
 
-const Transform = require('readable-stream').Transform
-const util = require('util')
+var Transform = require('readable-stream').Transform
+var util = require('util')
 
 module.exports = function (opts, cb) {
-  const s = new CSVStream(opts, cb)
+  var s = new CSVStream(opts, cb)
 
   if (s.cb) s.on('error', s.cb)
   return s
@@ -55,8 +55,8 @@ CSVStream.prototype._transform = function (chunk, encoding, done) {
 
 CSVStream.prototype._quoted = function (d, i) {
   this._prevChar = d.charAt(i)
-  const single = d.charAt(i + 1) !== this.quote
-  const dbl = d.charAt(i + 1) === this.quote && d.charAt(i + 2) === this.quote
+  var single = d.charAt(i + 1) !== this.quote
+  var dbl = d.charAt(i + 1) === this.quote && d.charAt(i + 2) === this.quote
 
   return single || dbl
 }
@@ -68,7 +68,7 @@ CSVStream.prototype._q = function (char) {
 }
 
 CSVStream.prototype.parse = function (data) {
-  let c
+  var c
 
   for (var i = 0; i < data.length; i++) {
     c = data.charAt(i)
@@ -137,8 +137,8 @@ CSVStream.prototype.parse = function (data) {
 
 CSVStream.prototype._emitLine = function () {
   this._line.push(this._field)
-  const line = {}
-  const self = this
+  var line = {}
+  var self = this
 
   if (this.hasColumns) {
     if (this.lineNo === 0) {

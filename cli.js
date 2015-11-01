@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-const csv = require('./csv-streamify')
+var csv = require('./csv-streamify')
 
-const arg = process.argv[2]
-const opts = { encoding: 'utf8' }
+var arg = process.argv[2]
+var opts = { encoding: 'utf8' }
 
 if (!process.stdin.isTTY || arg === '-') {
   process.stdin.pipe(csv(opts)).pipe(process.stdout)

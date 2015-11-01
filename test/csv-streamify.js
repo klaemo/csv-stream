@@ -1,20 +1,20 @@
 /* global describe, it */
 'use strict'
 
-const assert = require('assert')
-const csv = require('../csv-streamify')
-const fs = require('fs')
-const path = require('path')
-const fixture = path.join(__dirname, 'fixtures', 'quote.csv')
+var assert = require('assert')
+var csv = require('../csv-streamify')
+var fs = require('fs')
+var path = require('path')
+var fixture = path.join(__dirname, 'fixtures', 'quote.csv')
 
 describe('without callback', function () {
   it('should emit a buffer per line (non-flowing-mode)', function (done) {
-    const parser = csv()
-    const fstream = fs.createReadStream(fixture)
+    var parser = csv()
+    var fstream = fs.createReadStream(fixture)
 
-    let count = 0
+    var count = 0
     parser.on('readable', function () {
-      let chunk
+      var chunk
       while ((chunk = parser.read()) !== null) {
         assert(Buffer.isBuffer(chunk))
         assert(Array.isArray(JSON.parse(chunk)))
@@ -35,10 +35,10 @@ describe('without callback', function () {
   })
 
   it('should emit a buffer per line (flowing-mode)', function (done) {
-    const parser = csv()
-    const fstream = fs.createReadStream(fixture)
+    var parser = csv()
+    var fstream = fs.createReadStream(fixture)
 
-    let count = 0
+    var count = 0
     parser.on('data', function (chunk) {
       assert(Buffer.isBuffer(chunk))
       assert(Array.isArray(JSON.parse(chunk)))
@@ -57,10 +57,10 @@ describe('without callback', function () {
   })
 
   it('should emit a string containing one line', function (done) {
-    const parser = csv({ encoding: 'utf8' })
-    const fstream = fs.createReadStream(fixture)
+    var parser = csv({ encoding: 'utf8' })
+    var fstream = fs.createReadStream(fixture)
 
-    let count = 0
+    var count = 0
     parser.on('data', function (chunk) {
       assert(typeof chunk === 'string')
       assert(Array.isArray(JSON.parse(chunk)))
@@ -80,8 +80,8 @@ describe('without callback', function () {
 
 describe('with callback', function () {
   it('should callback with entire parsed document', function (done) {
-    const parser = csv(cb)
-    const fstream = fs.createReadStream(fixture)
+    var parser = csv(cb)
+    var fstream = fs.createReadStream(fixture)
 
     function cb (err, doc) {
       if (err) return done(err)
@@ -103,10 +103,10 @@ describe('with callback', function () {
 
 describe('newline', function () {
   it('should respect options.newline', function (done) {
-    const parser = csv({ newline: '\r\n' })
-    const fstream = fs.createReadStream(path.join(__dirname, 'fixtures', 'quote_crlf.csv'))
+    var parser = csv({ newline: '\r\n' })
+    var fstream = fs.createReadStream(path.join(__dirname, 'fixtures', 'quote_crlf.csv'))
 
-    let count = 0
+    var count = 0
     parser.on('data', function (chunk) {
       assert(Buffer.isBuffer(chunk))
       assert(Array.isArray(JSON.parse(chunk)))
@@ -126,10 +126,10 @@ describe('newline', function () {
 
 describe('object mode', function () {
   it('should emit one array per line', function (done) {
-    const parser = csv({ objectMode: true })
-    const fstream = fs.createReadStream(fixture)
+    var parser = csv({ objectMode: true })
+    var fstream = fs.createReadStream(fixture)
 
-    let count = 0
+    var count = 0
     parser.on('data', function (chunk) {
       assert(Array.isArray(chunk))
       assert.equal(parser.lineNo, count)
