@@ -1,8 +1,10 @@
-var Transform = require('readable-stream').Transform,
-    util = require('util')
+'use strict'
+
+const Transform = require('readable-stream').Transform
+const util = require('util')
 
 module.exports = function (opts, cb) {
-  var s = new CSVStream(opts, cb)
+  const s = new CSVStream(opts, cb)
 
   if (s.cb) s.on('error', s.cb)
   return s
@@ -53,8 +55,8 @@ CSVStream.prototype._transform = function (chunk, encoding, done) {
 
 CSVStream.prototype._quoted = function (d, i) {
   this._prevChar = d.charAt(i)
-  var single = d.charAt(i + 1) !== this.quote,
-      dbl = d.charAt(i + 1) === this.quote && d.charAt(i + 2) === this.quote
+  const single = d.charAt(i + 1) !== this.quote
+  const dbl = d.charAt(i + 1) === this.quote && d.charAt(i + 2) === this.quote
 
   return single || dbl
 }
@@ -66,7 +68,7 @@ CSVStream.prototype._q = function (char) {
 }
 
 CSVStream.prototype.parse = function (data) {
-  var c
+  let c
 
   for (var i = 0; i < data.length; i++) {
     c = data.charAt(i)
@@ -93,13 +95,13 @@ CSVStream.prototype.parse = function (data) {
     // xx"[c]
     if (c !== this.quote && this._prev[0] === this.quote &&
         this._prev[1] !== this.quote) {
-      this._isQuoted = this._isQuoted ? false : true
+      this._isQuoted = !this._isQuoted
     }
 
     // """[c]
     if (c !== this.quote && this._prev[0] === this.quote &&
         this._prev[1] === this.quote && this._prev[2] === this.quote) {
-      this._isQuoted = this._isQuoted ? false : true
+      this._isQuoted = !this._isQuoted
       this._field += this.quote
     }
 
@@ -135,8 +137,8 @@ CSVStream.prototype.parse = function (data) {
 
 CSVStream.prototype._emitLine = function () {
   this._line.push(this._field)
-  var line = {},
-      self = this
+  const line = {}
+  const self = this
 
   if (this.hasColumns) {
     if (this.lineNo === 0) {
@@ -179,7 +181,7 @@ CSVStream.prototype._flush = function (fn) {
     if (this._line.length) this._emitLine()
     if (this.cb) this.cb(null, this.body)
     fn()
-  } catch(err) {
+  } catch (err) {
     fn(err)
   }
 }

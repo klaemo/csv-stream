@@ -1,14 +1,16 @@
-var assert = require('assert'),
-    csv = require('../csv-streamify'),
-    fs = require('fs'),
-    path = require('path'),
-    base = path.join(process.cwd(), 'node_modules', 'csv-spectrum'),
-    csvPath = path.join(base, 'csvs')
+/* global describe, it */
+'use strict'
 
-describe('spectrum', function() {
-  var specs = fs.readdirSync(csvPath)
-    .map(function (spec) { return spec.replace('.csv', '') })
-    
+const assert = require('assert')
+const csv = require('../csv-streamify')
+const fs = require('fs')
+const path = require('path')
+const base = path.join(process.cwd(), 'node_modules', 'csv-spectrum')
+const csvPath = path.join(base, 'csvs')
+
+describe('spectrum', function () {
+  const specs = fs.readdirSync(csvPath).map(function (spec) { return spec.replace('.csv', '') })
+
   specs.forEach(function (spec) {
     it(spec, function (done) {
       var opts = { columns: true }
@@ -25,6 +27,4 @@ describe('spectrum', function() {
       s.pipe(parser)
     })
   })
-
 })
-

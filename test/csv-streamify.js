@@ -1,18 +1,21 @@
-var assert = require('assert'),
-    csv = require('../csv-streamify'),
-    fs = require('fs'),
-    path = require('path'),
-    fixture = path.join(__dirname, 'fixtures', 'quote.csv')
+/* global describe, it */
+'use strict'
 
-describe('without callback', function() {
+const assert = require('assert')
+const csv = require('../csv-streamify')
+const fs = require('fs')
+const path = require('path')
+const fixture = path.join(__dirname, 'fixtures', 'quote.csv')
+
+describe('without callback', function () {
   it('should emit a buffer per line (non-flowing-mode)', function (done) {
-    var count = 0,
-        parser = csv(),
-        fstream = fs.createReadStream(fixture)
+    const parser = csv()
+    const fstream = fs.createReadStream(fixture)
 
+    let count = 0
     parser.on('readable', function () {
-      var chunk
-      while (null !== (chunk = parser.read())) {
+      let chunk
+      while ((chunk = parser.read()) !== null) {
         assert(Buffer.isBuffer(chunk))
         assert(Array.isArray(JSON.parse(chunk)))
 
@@ -32,10 +35,10 @@ describe('without callback', function() {
   })
 
   it('should emit a buffer per line (flowing-mode)', function (done) {
-    var count = 0,
-        parser = csv(),
-        fstream = fs.createReadStream(fixture)
+    const parser = csv()
+    const fstream = fs.createReadStream(fixture)
 
+    let count = 0
     parser.on('data', function (chunk) {
       assert(Buffer.isBuffer(chunk))
       assert(Array.isArray(JSON.parse(chunk)))
@@ -54,10 +57,10 @@ describe('without callback', function() {
   })
 
   it('should emit a string containing one line', function (done) {
-    var count = 0,
-        parser = csv({ encoding: 'utf8' }),
-        fstream = fs.createReadStream(fixture)
+    const parser = csv({ encoding: 'utf8' })
+    const fstream = fs.createReadStream(fixture)
 
+    let count = 0
     parser.on('data', function (chunk) {
       assert(typeof chunk === 'string')
       assert(Array.isArray(JSON.parse(chunk)))
@@ -75,10 +78,10 @@ describe('without callback', function() {
   })
 })
 
-describe('with callback', function() {
+describe('with callback', function () {
   it('should callback with entire parsed document', function (done) {
-    var parser = csv(cb),
-        fstream = fs.createReadStream(fixture)
+    const parser = csv(cb)
+    const fstream = fs.createReadStream(fixture)
 
     function cb (err, doc) {
       if (err) return done(err)
@@ -89,7 +92,7 @@ describe('with callback', function() {
       assert.deepEqual(doc[1], [
         'Job Description:', '"Etiketten", "Borthener Obst" - A4 (Neutral)'
       ])
-      
+
       assert.equal(doc.length, 13)
       done()
     }
@@ -100,10 +103,10 @@ describe('with callback', function() {
 
 describe('newline', function () {
   it('should respect options.newline', function (done) {
-    var count = 0,
-        parser = csv({ newline: '\r\n' }),
-        fstream = fs.createReadStream(path.join(__dirname, 'fixtures', 'quote_crlf.csv'))
+    const parser = csv({ newline: '\r\n' })
+    const fstream = fs.createReadStream(path.join(__dirname, 'fixtures', 'quote_crlf.csv'))
 
+    let count = 0
     parser.on('data', function (chunk) {
       assert(Buffer.isBuffer(chunk))
       assert(Array.isArray(JSON.parse(chunk)))
@@ -121,12 +124,12 @@ describe('newline', function () {
   })
 })
 
-describe('object mode', function() {
+describe('object mode', function () {
   it('should emit one array per line', function (done) {
-    var count = 0,
-        parser = csv({ objectMode: true }),
-        fstream = fs.createReadStream(fixture)
+    const parser = csv({ objectMode: true })
+    const fstream = fs.createReadStream(fixture)
 
+    let count = 0
     parser.on('data', function (chunk) {
       assert(Array.isArray(chunk))
       assert.equal(parser.lineNo, count)
@@ -143,21 +146,21 @@ describe('object mode', function() {
   })
 })
 
-describe('edge cases', function() {
-  it('should handle line breaks spanning multiple chunks', function() {
-    var parser = csv({ newline: '\r\n' }, function() {})
+describe('edge cases', function () {
+  it('should handle line breaks spanning multiple chunks', function () {
+    var parser = csv({ newline: '\r\n' }, function () {})
     parser.parse('hey,yo\r')
     parser.parse('\nfoo,bar')
-    parser._flush(function() {})
+    parser._flush(function () {})
 
     assert.deepEqual(parser.body, [ [ 'hey', 'yo' ], ['foo', 'bar'] ])
   })
 
-  it('should handle quotes spanning multiple chunks', function() {
-    var parser = csv(function() {})
+  it('should handle quotes spanning multiple chunks', function () {
+    var parser = csv(function () {})
     parser.parse('"""hey,yo"')
     parser.parse('"",foo,bar')
-    parser._flush(function() {})
+    parser._flush(function () {})
 
     assert.deepEqual(parser.body, [ [ '"hey,yo"', 'foo', 'bar' ] ])
   })
