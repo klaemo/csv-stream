@@ -4,7 +4,7 @@ csv-streamify [![Build Status](https://travis-ci.org/klaemo/csv-stream.png)](htt
 
 Parses csv files. Accepts options. No coffee script, no weird APIs. Just streams. Tested against [csv-spectrum](https://github.com/maxogden/csv-spectrum) and used in production.
 
-Works in node `0.10`, `0.12` and `iojs`.
+Works in node `0.12`, `iojs` and `node 4.x`. Might work in node `0.10`, but is not tested in it.
 
 ## Installation
 
