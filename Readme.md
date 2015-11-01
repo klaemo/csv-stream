@@ -17,19 +17,16 @@ npm install csv-streamify
 This module implements a simple node [stream.Transform](http://nodejs.org/api/stream.html#stream_class_stream_transform) stream.
 
 ```javascript
-var csv = require('csv-streamify'),
-    fs = require('fs')
+var csv = require('csv-streamify')
+var fs = require('fs')
 
-var fstream = fs.createReadStream('/path/to/file'),
-    parser = csv(options /* optional */, callback /* optional */)
+var fstream = fs.createReadStream('/path/to/file.csv')
+var parser = csv(options /* optional */, callback /* optional */)
 
 // emits each line as a buffer or as a string representing an array of fields
 parser.on('readable', function () {
   var line = parser.read()
   // do stuff with data as it comes in
-
-  // current line number
-  console.log(parser.lineNo)
 })
 
 // AND/OR

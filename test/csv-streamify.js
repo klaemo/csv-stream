@@ -19,15 +19,12 @@ describe('without callback', function () {
         assert(Buffer.isBuffer(chunk))
         assert(Array.isArray(JSON.parse(chunk)))
 
-        assert.equal(parser.lineNo, count)
         count += 1
       }
     })
 
     parser.on('end', function () {
-      assert.equal(parser.body.length, 0, 'should not buffer')
       assert.equal(count, 13)
-      assert.equal(parser.lineNo, 13)
       done()
     })
 
@@ -43,13 +40,11 @@ describe('without callback', function () {
       assert(Buffer.isBuffer(chunk))
       assert(Array.isArray(JSON.parse(chunk)))
 
-      assert.equal(parser.lineNo, count)
       count += 1
     })
 
     parser.on('end', function () {
       assert.equal(count, 13)
-      assert.equal(parser.lineNo, 13)
       done()
     })
 
@@ -64,13 +59,11 @@ describe('without callback', function () {
     parser.on('data', function (chunk) {
       assert(typeof chunk === 'string')
       assert(Array.isArray(JSON.parse(chunk)))
-      assert.equal(parser.lineNo, count)
       count += 1
     })
 
     parser.on('end', function () {
       assert.equal(count, 13)
-      assert.equal(parser.lineNo, 13)
       done()
     })
 
@@ -110,13 +103,11 @@ describe('newline', function () {
     parser.on('data', function (chunk) {
       assert(Buffer.isBuffer(chunk))
       assert(Array.isArray(JSON.parse(chunk)))
-      assert.equal(parser.lineNo, count)
       count += 1
     })
 
     parser.on('end', function () {
       assert.equal(count, 13)
-      assert.equal(parser.lineNo, 13)
       done()
     })
 
@@ -132,13 +123,11 @@ describe('object mode', function () {
     var count = 0
     parser.on('data', function (chunk) {
       assert(Array.isArray(chunk))
-      assert.equal(parser.lineNo, count)
       count += 1
     })
 
     parser.on('end', function () {
       assert.equal(count, 13)
-      assert.equal(parser.lineNo, 13)
       done()
     })
 
@@ -147,21 +136,23 @@ describe('object mode', function () {
 })
 
 describe('edge cases', function () {
-  it('should handle line breaks spanning multiple chunks', function () {
-    var parser = csv({ newline: '\r\n' }, function () {})
-    parser.parse('hey,yo\r')
-    parser.parse('\nfoo,bar')
-    parser._flush(function () {})
-
-    assert.deepEqual(parser.body, [ [ 'hey', 'yo' ], ['foo', 'bar'] ])
+  it('should handle line breaks spanning multiple chunks', function (done) {
+    var parser = csv({ newline: '\r\n' }, function (err, doc) {
+      if (err) return done(err)
+      assert.deepEqual(doc, [ [ 'hey', 'yo' ], ['foo', 'bar'] ])
+      done()
+    })
+    parser.write('hey,yo\r')
+    parser.end('\nfoo,bar')
   })
 
-  it('should handle quotes spanning multiple chunks', function () {
-    var parser = csv(function () {})
-    parser.parse('"""hey,yo"')
-    parser.parse('"",foo,bar')
-    parser._flush(function () {})
-
-    assert.deepEqual(parser.body, [ [ '"hey,yo"', 'foo', 'bar' ] ])
+  it('should handle quotes spanning multiple chunks', function (done) {
+    var parser = csv(function (err, doc) {
+      if (err) return done(err)
+      assert.deepEqual(doc, [ [ '"hey,yo"', 'foo', 'bar' ] ])
+      done()
+    })
+    parser.write('"""hey,yo"')
+    parser.end('"",foo,bar')
   })
 })

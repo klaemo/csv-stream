@@ -2,6 +2,8 @@
 ==================
 
  * drop node 0.10 support, add node 4 support
+ * use `through2` internally
+ * deprecate `parser.lineNo` and `parser.body`
 
 2.0.0 / 2015-02-15
 ==================

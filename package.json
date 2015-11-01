@@ -22,7 +22,7 @@
   ],
   "license": "BSD-2-Clause",
   "dependencies": {
-    "readable-stream": "^2.0.4"
+    "through2": "^2.0.0"
   },
   "devDependencies": {
     "csv-spectrum": "^1.0.0",
