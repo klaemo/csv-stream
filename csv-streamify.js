@@ -1,3 +1,5 @@
+'use strict'
+
 const Transform = require('readable-stream').Transform
 const util = require('util')
 
