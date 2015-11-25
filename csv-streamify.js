@@ -99,6 +99,12 @@ function createParser (opts, state) {
         }
       }
 
+      // are the last two chars quotes?
+      if (state._isQuoted && state._prev[0] === opts.quote && state._prev[1] === opts.quote) {
+        state._field += opts.quote
+        state._prev = []
+      }
+
       // skip over quote
       if (c === opts.quote) {
         queue(c)

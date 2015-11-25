@@ -181,4 +181,21 @@ describe('edge cases', function () {
     parser.write('"""hey,yo"')
     parser.end('"",foo,bar')
   })
+
+  it('should handle all the quotes (issue #14)', function (done) {
+    var input = 'name,description,watchers\n'
+    input += 'SLaks/Styliner,"Turns CSS stylesheets into inline style="""" attributes for HTML emails",33\n'
+    input += 'guelfey/go.dbus,Native Go bindings for D-Bus,33'
+
+    str(input).pipe(csv({ columns: true }, function (err, res) {
+      if (err) return done(err)
+
+      assert.strictEqual(res.length, 2, 'should emit 2 lines')
+      assert.strictEqual(res[0].name, 'SLaks/Styliner')
+      assert.strictEqual(res[0].description, 'Turns CSS stylesheets into inline style="" attributes for HTML emails')
+      assert.strictEqual(res[1].name, 'guelfey/go.dbus')
+      assert.strictEqual(res[1].description, 'Native Go bindings for D-Bus')
+      done()
+    }))
+  })
 })
