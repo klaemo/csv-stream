@@ -6,6 +6,7 @@ var csv = require('../csv-streamify')
 var fs = require('fs')
 var path = require('path')
 var fixture = path.join(__dirname, 'fixtures', 'quote.csv')
+var str = require('string-to-stream')
 
 describe('without callback', function () {
   it('should emit a buffer per line (non-flowing-mode)', function (done) {
@@ -132,6 +133,31 @@ describe('object mode', function () {
     })
 
     fstream.pipe(parser)
+  })
+
+  it('should emit single column properly (issue #17)', function (done) {
+    var parser = csv({ objectMode: true, columns: true })
+    var count = 0
+
+    str('COL0\ncol0\n').pipe(parser).on('data', function (chunk) {
+      assert.deepEqual(chunk, { COL0: 'col0' })
+      count += 1
+    }).on('end', function () {
+      assert.strictEqual(count, 1, 'should have emitted a single line')
+      done()
+    }).on('error', done)
+  })
+
+  it('should emit multiple columns properly', function (done) {
+    var parser = csv({ objectMode: true, columns: true }, function (err, res) {
+      if (err) return done(err)
+      assert.strictEqual(res.length, 2, 'should have 2 rows')
+      assert.deepEqual(res[0], { COL0: 'col0', COL1: 'col1' })
+      assert.deepEqual(res[1], { COL0: 'col2', COL1: 'col3' })
+      done()
+    })
+
+    str('COL0,COL1\ncol0,col1\ncol2,col3').pipe(parser)
   })
 })
 

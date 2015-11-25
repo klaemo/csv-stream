@@ -145,14 +145,16 @@ function createParser (opts, state) {
       }
 
       queue(c)
+
       // append current char to _field string
       state._field += c
     }
+    // console.log(state)
     cb()
   }, function flush (fn) {
     // flush last line
     try {
-      if (state._line.length) emitLine(this)
+      if (state._line.length || state._field) emitLine(this)
       if (opts.cb) opts.cb(null, state.body)
       fn()
     } catch (err) {
