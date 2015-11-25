@@ -1,6 +1,6 @@
 {
   "name": "csv-streamify",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Streaming CSV Parser. Made entirely out of streams.",
   "author": "Clemens Stolle",
   "main": "csv-streamify.js",
