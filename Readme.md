@@ -16,33 +16,43 @@ npm install csv-streamify
 ## Usage
 
 This module implements a simple node [stream.Transform](http://nodejs.org/api/stream.html#stream_class_stream_transform) stream.
+You can write to it, read from it and use `.pipe` as you would expect.
 
 ```javascript
-var csv = require('csv-streamify')
-var fs = require('fs')
+const csv = require('csv-streamify')
+const fs = require('fs')
 
-var fstream = fs.createReadStream('/path/to/file.csv')
-var parser = csv(options /* optional */, callback /* optional */)
+const parser = csv()
 
 // emits each line as a buffer or as a string representing an array of fields
-parser.on('readable', function () {
-  var line = parser.read()
-  // do stuff with data as it comes in
+parser.on('data', function (line) {
+  console.log(line)
 })
 
-// AND/OR
-function callback(err, doc) {
-  if (err) return handleErrorGracefully(err)
-
-  // doc is an array of row arrays
-  doc.forEach(function (row) { console.log(row) })
-}
-
-// now pump some data into it (and pipe it somewhere else)
-fstream.pipe(parser).pipe(nirvana)
-
+// now pipe some data into it
+fs.createReadStream('/path/to/file.csv').pipe(parser)
 ```
-__Note:__ If you pass a callback to `csv-streamify` it will buffer the parsed data for you and pass it to the callback when it's done. This behaviour can obviously lead to out of memory errors with very large csv files.
+
+### with options and callback
+
+The first argument can either be an options object (see below) or a callback function.
+
+__Note:__ If you pass a callback to `csv-streamify` it will buffer the parsed data for you and
+pass it to the callback when it's done. This behaviour can obviously lead to out of memory errors with very large csv files.
+
+```javascript
+const csv = require('csv-streamify')
+const fs = require('fs')
+
+const parser = csv({ objectMode: true }, function (err, result) {
+  if (err) throw err
+  // our csv has been parsed succesfully
+  result.forEach(function (line) { console.log(line) })
+})
+
+// now pipe some data into it
+fs.createReadStream('/path/to/file.csv').pipe(parser)
+```
 
 ### Options
 
