@@ -3,6 +3,7 @@ csv-streamify [![Build Status](https://travis-ci.org/klaemo/csv-stream.png)](htt
 [![NPM](https://nodei.co/npm/csv-streamify.png?downloadRank=true)](https://nodei.co/npm/csv-streamify/)
 
 Parses csv files. Accepts options. No coffee script, no weird APIs. Just streams. Tested against [csv-spectrum](https://github.com/maxogden/csv-spectrum) and used in production.
+It is also "fast enough" (around 60,000 rows per second, but that varies with data obviously).
 
 Works in node `0.12`, `iojs` and `node 4.x`. Might work in node `0.10`, but is not tested in it.
 
@@ -90,6 +91,7 @@ $ csv-streamify -
 ## Wishlist
 
 - browser support
+- better CLI
 
 If you would like to contribute either of those just open an issue so we can discuss it further. :)
 
