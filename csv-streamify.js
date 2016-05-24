@@ -12,7 +12,7 @@ module.exports = function (opts, cb) {
 
   opts.delimiter = opts.delimiter || ','
   opts.newline = opts.newline || '\n'
-  opts.quote = opts.quote || '\"'
+  opts.quote = opts.quote || '"'
   opts.empty = opts.hasOwnProperty('empty') ? opts.empty : ''
   opts.objectMode = opts.objectMode || false
   opts.hasColumns = opts.columns || false
