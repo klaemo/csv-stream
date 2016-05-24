@@ -1,3 +1,8 @@
+3.0.4 / 2016-05-24
+==================
+
+ * ensure compatibility with newer node version
+
 3.0.3 / 2015-11-26
 ==================
 
