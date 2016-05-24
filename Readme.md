@@ -1,11 +1,11 @@
-csv-streamify [![Build Status](https://travis-ci.org/klaemo/csv-stream.png)](https://travis-ci.org/klaemo/csv-stream)
+csv-streamify [![Build Status](https://travis-ci.org/klaemo/csv-stream.svg?branch=master)](https://travis-ci.org/klaemo/csv-stream)
 ===
 [![NPM](https://nodei.co/npm/csv-streamify.png?downloadRank=true)](https://nodei.co/npm/csv-streamify/)
 
 Parses csv files. Accepts options. No coffee script, no weird APIs. Just streams. Tested against [csv-spectrum](https://github.com/maxogden/csv-spectrum) and used in production.
 It is also "fast enough" (around 60,000 rows per second, but that varies with data obviously).
 
-Works in node `0.12`, `iojs` and `node 4.x`. Might work in node `0.10`, but is not tested in it.
+Works in node `0.12`, `4`, `5` and `6`. Might work in node `0.10`, but is not tested in it.
 
 ## Installation
 

@@ -2,6 +2,7 @@ before_install:
   - npm install -g npm
 language: node_js
 node_js:
-  - "4.2"
-  - "iojs"
+  - "6"
+  - "5"
+  - "4"
   - "0.12"
