@@ -82,7 +82,7 @@ function createParser (opts, state) {
   }
 
   return through(opts, function parse (chunk, enc, cb) {
-    var data = chunk.toString().trim()
+    var data = chunk.toString()
     var c
 
     for (var i = 0; i < data.length; i++) {
