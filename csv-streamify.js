@@ -16,8 +16,8 @@ module.exports = function (opts, cb) {
   opts.empty = opts.hasOwnProperty('empty') ? opts.empty : ''
   opts.objectMode = opts.objectMode || false
   opts.hasColumns = opts.columns || false
-  opts.columnTransform = opts.columnTransform || function(l) { return l }
-  
+  opts.columnTransform = opts.columnTransform || function (l) { return l }
+
   // state
   var state = {
     body: [],
