@@ -71,7 +71,12 @@ The options are also passed to the underlying transform stream, so you can pass 
   objectMode: false,
 
   // if set to true, uses first row as keys -> [ { column1: value1, column2: value2 }, ...]
-  columns: false
+  columns: false,
+  
+  // each csv column name is optionally mapped to this so its value can be transformed
+  columnTransform: function(name) {
+    return name
+  }
 }
 ```
 
