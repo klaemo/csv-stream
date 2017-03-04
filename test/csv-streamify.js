@@ -199,3 +199,45 @@ describe('edge cases', function () {
     }))
   })
 })
+
+describe('column name transform', function () {
+  it('should transform column names', function (done) {
+    var input = 'Some Name,product_description,watchers\n'
+    input += 'SLaks/Styliner,"Turns CSS stylesheets into inline style="""" attributes for HTML emails",33\n'
+    input += 'guelfey/go.dbus,Native Go bindings for D-Bus,12'
+
+    var opts = {
+      columns: true,
+      columnTransform: function (name) {
+        switch (name) {
+          case 'Some Name':
+            return 'newName'
+          case 'product_description':
+            return 'productDescription'
+          default:
+            return name
+        }
+      }
+    }
+
+    str(input).pipe(csv(opts, function (err, res) {
+      if (err) return done(err)
+
+      assert.strictEqual(res.length, 2, 'should emit 2 lines')
+
+      assert.strictEqual(res[0].hasOwnProperty('Some Name'), false)
+      assert.strictEqual(res[0]['newName'], 'SLaks/Styliner')
+      assert.strictEqual(res[0].hasOwnProperty('product_description'), false)
+      assert.strictEqual(res[0]['productDescription'], 'Turns CSS stylesheets into inline style="" attributes for HTML emails')
+      assert.strictEqual(res[0]['watchers'], '33')
+
+      assert.strictEqual(res[1].hasOwnProperty('Some Name'), false)
+      assert.strictEqual(res[1]['newName'], 'guelfey/go.dbus')
+      assert.strictEqual(res[1].hasOwnProperty('product_description'), false)
+      assert.strictEqual(res[1]['productDescription'], 'Native Go bindings for D-Bus')
+      assert.strictEqual(res[1]['watchers'], '12')
+
+      done()
+    }))
+  })
+})
