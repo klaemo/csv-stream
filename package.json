@@ -8,7 +8,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "standard && mocha -R spec"
+    "pretest": "standard",
+    "test": "mocha -R spec"
   },
   "bin": {
     "csv-streamify": "cli.js"
@@ -31,6 +32,10 @@
     "string-to-stream": "^1.0.1"
   },
   "engines": {
-    "node": ">=0.12.0"
-  }
+    "node": ">=4"
+  },
+  "files": [
+    "csv-streamify.js",
+    "cli.js"
+  ]
 }

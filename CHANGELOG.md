@@ -1,3 +1,10 @@
+4.0.0 / 2018-03-25
+==================
+
+ * BREAKING: make `objectMode: true` the default. The parser now emits objects/arrays per line instead of buffers.
+ * drop support for old, unsupported node versions (0.12, 5) and test in node 8 and 9.
+ * update dependencies
+
 3.0.4 / 2016-05-24
 ==================
 
