@@ -9,31 +9,8 @@ var fixture = path.join(__dirname, 'fixtures', 'quote.csv')
 var str = require('string-to-stream')
 
 describe('without callback', function () {
-  it('should emit a buffer per line (non-flowing-mode)', function (done) {
-    var parser = csv()
-    var fstream = fs.createReadStream(fixture)
-
-    var count = 0
-    parser.on('readable', function () {
-      var chunk
-      while ((chunk = parser.read()) !== null) {
-        assert(Buffer.isBuffer(chunk))
-        assert(Array.isArray(JSON.parse(chunk)))
-
-        count += 1
-      }
-    })
-
-    parser.on('end', function () {
-      assert.equal(count, 13)
-      done()
-    })
-
-    fstream.pipe(parser)
-  })
-
-  it('should emit a buffer per line (flowing-mode)', function (done) {
-    var parser = csv()
+  it('should emit a buffer per line (flowing-mode, objectMode: false)', function (done) {
+    var parser = csv({ objectMode: false })
     var fstream = fs.createReadStream(fixture)
 
     var count = 0
@@ -53,7 +30,7 @@ describe('without callback', function () {
   })
 
   it('should emit a string containing one line', function (done) {
-    var parser = csv({ encoding: 'utf8' })
+    var parser = csv({ encoding: 'utf8', objectMode: false })
     var fstream = fs.createReadStream(fixture)
 
     var count = 0
@@ -102,8 +79,7 @@ describe('newline', function () {
 
     var count = 0
     parser.on('data', function (chunk) {
-      assert(Buffer.isBuffer(chunk))
-      assert(Array.isArray(JSON.parse(chunk)))
+      assert(Array.isArray(chunk))
       count += 1
     })
 
@@ -117,8 +93,30 @@ describe('newline', function () {
 })
 
 describe('object mode', function () {
-  it('should emit one array per line', function (done) {
-    var parser = csv({ objectMode: true })
+  it('should emit an array per line (non-flowing-mode)', function (done) {
+    var parser = csv()
+    var fstream = fs.createReadStream(fixture)
+
+    var count = 0
+    parser.on('readable', function () {
+      var chunk
+      while ((chunk = parser.read()) !== null) {
+        assert(Array.isArray(chunk))
+
+        count += 1
+      }
+    })
+
+    parser.on('end', function () {
+      assert.equal(count, 13)
+      done()
+    })
+
+    fstream.pipe(parser)
+  })
+
+  it('should emit one array per line (flowing-mode)', function (done) {
+    var parser = csv()
     var fstream = fs.createReadStream(fixture)
 
     var count = 0
@@ -136,7 +134,7 @@ describe('object mode', function () {
   })
 
   it('should emit single column properly (issue #17)', function (done) {
-    var parser = csv({ objectMode: true, columns: true })
+    var parser = csv({ columns: true })
     var count = 0
 
     str('COL0\ncol0\n').pipe(parser).on('data', function (chunk) {
@@ -149,7 +147,7 @@ describe('object mode', function () {
   })
 
   it('should emit multiple columns properly', function (done) {
-    var parser = csv({ objectMode: true, columns: true }, function (err, res) {
+    var parser = csv({ columns: true }, function (err, res) {
       if (err) return done(err)
       assert.strictEqual(res.length, 2, 'should have 2 rows')
       assert.deepEqual(res[0], { COL0: 'col0', COL1: 'col1' })

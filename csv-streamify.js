@@ -2,6 +2,18 @@
 
 var through = require('through2')
 
+/**
+ * Creates the CSV parser
+ *
+ * @param {object} opts Options object
+ * @param {string} [opts.delimiter=','] The delimiter character
+ * @param {string} [opts.newline='\n'] The newline character
+ * @param {string} [opts.quote='"'] The quote character
+ * @param {string} [opts.empty=''] Which character to return for empty fields
+ * @param {boolean} [opts.objectMode=true] Whether to return an object or a buffer per line
+ * @param {boolean} [opts.columns=false] Whether to parse headers
+ * @param {function} [cb] Callback function
+ */
 module.exports = function (opts, cb) {
   if (typeof opts === 'function') {
     cb = opts
@@ -14,7 +26,7 @@ module.exports = function (opts, cb) {
   opts.newline = opts.newline || '\n'
   opts.quote = opts.quote || '"'
   opts.empty = opts.hasOwnProperty('empty') ? opts.empty : ''
-  opts.objectMode = opts.objectMode || false
+  opts.objectMode = 'objectMode' in opts ? opts.objectMode : true
   opts.hasColumns = opts.columns || false
 
   // state
