@@ -6,7 +6,7 @@ csv-streamify [![Build Status](https://travis-ci.org/klaemo/csv-stream.svg?branc
 Parses csv files. Accepts options. No coffee script, no weird APIs. Just streams. Tested against [csv-spectrum](https://github.com/maxogden/csv-spectrum) and used in production.
 It is also "fast enough" (around 60,000 rows per second, but that varies with data obviously).
 
-Works in node `0.12`, `4`, `5` and `6`. Might work in node `0.10`, but is not tested in it.
+Works in node `4`, `6`, `8` and `9`. Might work in earlier versions, but is not tested in it.
 
 ## Installation
 
