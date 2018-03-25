@@ -1,7 +1,6 @@
-csv-streamify [![Build Status](https://travis-ci.org/klaemo/csv-stream.svg?branch=master)](https://travis-ci.org/klaemo/csv-stream)
+csv-streamify [![Build Status](https://travis-ci.org/klaemo/csv-stream.svg?branch=master)](https://travis-ci.org/klaemo/csv-stream) [![Greenkeeper badge](https://badges.greenkeeper.io/klaemo/csv-stream.svg)](https://greenkeeper.io/)
 ===
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/klaemo/csv-stream.svg)](https://greenkeeper.io/)
 [![NPM](https://nodei.co/npm/csv-streamify.png?downloadRank=true)](https://nodei.co/npm/csv-streamify/)
 
 Parses csv files. Accepts options. No coffee script, no weird APIs. Just streams. Tested against [csv-spectrum](https://github.com/maxogden/csv-spectrum) and used in production.
