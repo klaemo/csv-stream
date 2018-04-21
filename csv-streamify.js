@@ -28,6 +28,7 @@ module.exports = function (opts, cb) {
   opts.empty = opts.hasOwnProperty('empty') ? opts.empty : ''
   opts.objectMode = 'objectMode' in opts ? opts.objectMode : true
   opts.hasColumns = opts.columns || false
+  opts.sendColumns = opts.sendColumns || false
 
   // state
   var state = {
@@ -70,7 +71,11 @@ function createParser (opts, state) {
     // emit the parsed line as an array if in object mode
     // or as a stringified array (default)
     if (opts.objectMode) {
-      parser.push(state._line)
+      if (opts.sendColumns) {
+        parser.push({line: state._line, columns: state._columns})
+      } else {
+        parser.push(state._line)
+      }
     } else {
       parser.push(JSON.stringify(state._line) + '\n')
     }
