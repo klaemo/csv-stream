@@ -28,6 +28,7 @@ module.exports = function (opts, cb) {
   opts.empty = opts.hasOwnProperty('empty') ? opts.empty : ''
   opts.objectMode = 'objectMode' in opts ? opts.objectMode : true
   opts.hasColumns = opts.columns || false
+  opts.columnTransform = opts.columnTransform || function (l) { return l }
 
   // state
   var state = {
@@ -53,7 +54,7 @@ function createParser (opts, state) {
 
     if (opts.hasColumns) {
       if (state.lineNo === 0) {
-        state._columns = state._line
+        state._columns = state._line.map(opts.columnTransform)
         state.lineNo += 1
         reset()
         return
