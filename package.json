@@ -28,7 +28,7 @@
   "devDependencies": {
     "csv-spectrum": "^1.0.0",
     "mocha": "^5.0.5",
-    "standard": "^11.0.1",
+    "standard": "^12.0.0",
     "string-to-stream": "^1.0.1"
   },
   "engines": {
