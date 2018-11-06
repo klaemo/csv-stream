@@ -23,7 +23,7 @@
   ],
   "license": "BSD-2-Clause",
   "dependencies": {
-    "through2": "2.0.3"
+    "through2": "2.0.4"
   },
   "devDependencies": {
     "csv-spectrum": "^1.0.0",
