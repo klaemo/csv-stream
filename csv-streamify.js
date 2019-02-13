@@ -11,7 +11,7 @@ var through = require('through2')
  * @param {string} [opts.quote='"'] The quote character
  * @param {string} [opts.empty=''] Which character to return for empty fields
  * @param {boolean} [opts.objectMode=true] Whether to return an object or a buffer per line
- * @param {boolean} [opts.columns=false] Whether to parse headers
+ * @param {boolean|function} [opts.columns=false] Whether to parse headers or a function to parse headers
  * @param {function} [cb] Callback function
  */
 module.exports = function (opts, cb) {
@@ -53,7 +53,11 @@ function createParser (opts, state) {
 
     if (opts.hasColumns) {
       if (state.lineNo === 0) {
-        state._columns = state._line
+        if (typeof opts.hasColumns === 'function') {
+          state._columns = opts.hasColumns(state._line)
+        } else {
+          state._columns = state._line
+        }
         state.lineNo += 1
         reset()
         return

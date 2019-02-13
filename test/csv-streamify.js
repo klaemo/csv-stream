@@ -157,6 +157,19 @@ describe('object mode', function () {
 
     str('COL0,COL1\ncol0,col1\ncol2,col3').pipe(parser)
   })
+
+  it('should emit multiple columns parsed by custom function', function (done) {
+    var parser = csv({
+      columns: (cols) => cols.map(col => col.toLowerCase())
+    }, function (err, res) {
+      if (err) return done(err)
+      assert.deepEqual(res[0], { col0: 'col0', col1: 'col1' })
+      assert.deepEqual(res[1], { col0: 'col2', col1: 'col3' })
+      done()
+    })
+
+    str('COL0,COL1\ncol0,col1\ncol2,col3').pipe(parser)
+  })
 })
 
 describe('edge cases', function () {

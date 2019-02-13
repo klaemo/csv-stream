@@ -72,6 +72,8 @@ The options are also passed to the underlying transform stream, so you can pass 
   objectMode: false,
 
   // if set to true, uses first row as keys -> [ { column1: value1, column2: value2 }, ...]
+  // a function can be passed to columns to map the array of columns
+  // columns: (cols) => cols.map(col => col.toLowerCase())
   columns: false
 }
 ```
